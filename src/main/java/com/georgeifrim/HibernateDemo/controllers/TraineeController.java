@@ -20,6 +20,7 @@ public class TraineeController {
         return traineeService.getTraineeById(id);
     }
 
+
     @GetMapping("/byUserName/{username}")
     public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
 
