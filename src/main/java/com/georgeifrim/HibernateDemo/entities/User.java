@@ -21,14 +21,14 @@ public class User {
     private String last_name;
     private String username;
     private String password;
-    private boolean is_active;
+    private boolean isActive;
     
-    public User(String first_name, String last_name, boolean is_active) {
+    public User(String first_name, String last_name, boolean isActive) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = first_name + "." + last_name;
         this.password = passwordGenerator();
-        this.is_active = is_active;
+        this.isActive = isActive;
     }
 
     private String passwordGenerator() {

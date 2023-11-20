@@ -8,19 +8,20 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class Trainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToOne
     @JoinColumn(name = "trainingType_id")
     private TrainingType trainingType;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.PERSIST)
     private List<Training> trainings;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Trainee> trainees;
 
     @OneToOne
     private User user;
