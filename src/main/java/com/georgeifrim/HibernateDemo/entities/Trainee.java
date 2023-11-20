@@ -2,14 +2,12 @@ package com.georgeifrim.HibernateDemo.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class Trainee {
 
     @Id
@@ -24,7 +22,11 @@ public class Trainee {
     @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST)
     private List<Training> trainings;
 
-    @OneToOne
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Trainer> trainers;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     private User user;
+
 
 }
