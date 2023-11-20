@@ -17,10 +17,10 @@ public class Trainer {
     @JoinColumn(name = "trainingType_id")
     private TrainingType trainingType;
 
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private List<Training> trainings;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Trainee> trainees;
 
     @OneToOne

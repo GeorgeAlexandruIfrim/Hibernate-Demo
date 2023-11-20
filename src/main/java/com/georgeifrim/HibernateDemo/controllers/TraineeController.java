@@ -16,11 +16,11 @@ public class TraineeController {
     private final TraineeService traineeService;
 
     @GetMapping("/byId/{id}")
-    public ResponseEntity<Trainee> getTraineeById(@PathVariable int id){
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.getTraineeById(id));
+    public Trainee getTraineeById(@PathVariable Integer id){
+        return traineeService.getTraineeById(id);
     }
+
+
 
     @GetMapping("/byUserName/{username}")
     public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
@@ -55,9 +55,8 @@ public class TraineeController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public ResponseEntity<Trainee> deleteTrainee(@PathVariable String username){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.deleteTrainee(username));
+    public void deleteTrainee(@PathVariable String username){
+        traineeService.deleteTrainee(username);
     }
 
 
