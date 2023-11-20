@@ -32,4 +32,9 @@ public class TrainerService {
         log.info("Trainer created");
         return trainerRepo.save(trainer);
     }
+
+    public Trainer getTrainerById(int id) {
+        return trainerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Trainer not found with id " + id));
+    }
 }

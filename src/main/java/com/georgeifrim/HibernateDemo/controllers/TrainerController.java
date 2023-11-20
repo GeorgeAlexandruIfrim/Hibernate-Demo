@@ -24,5 +24,10 @@ public class TrainerController {
 //        trainerService.createTrainer(userId, trainingTypeId);
     }
 
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Trainer> getTrainerById(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(trainerService.getTrainerById(id));
+    }
 
 }
