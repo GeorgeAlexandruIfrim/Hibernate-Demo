@@ -21,6 +21,7 @@ public class TraineeController {
     }
 
 
+
     @GetMapping("/byUserName/{username}")
     public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
 
