@@ -12,6 +12,7 @@ public interface TraineeRepo extends JpaRepository<Trainee, Integer> {
         @Query("SELECT t FROM Trainee t WHERE t.user.username = ?1")
         Optional<Trainee> findTraineeByUserName(String username);
 
-
+        @Query("SELECT t FROM Trainee t WHERE t.id = ?1")
+        Optional<Trainee> findTraineeById(Integer id);
 
 }

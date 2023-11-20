@@ -2,12 +2,15 @@ package com.georgeifrim.HibernateDemo.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Trainee {
 
     @Id
@@ -19,10 +22,10 @@ public class Trainee {
 
     private String address;
 
-    @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Training> trainings;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Trainer> trainers;
 
     @OneToOne(cascade = CascadeType.PERSIST)
