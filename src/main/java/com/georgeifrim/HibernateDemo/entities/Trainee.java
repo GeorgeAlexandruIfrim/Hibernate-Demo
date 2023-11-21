@@ -22,7 +22,7 @@ public class Trainee {
 
     private String address;
 
-    @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Training> trainings;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
