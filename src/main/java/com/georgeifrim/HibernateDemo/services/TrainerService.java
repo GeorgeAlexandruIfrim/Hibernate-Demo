@@ -2,6 +2,8 @@ package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
 import com.georgeifrim.HibernateDemo.entities.TrainingType;
+import com.georgeifrim.HibernateDemo.entities.dto.TrainerDto;
+import com.georgeifrim.HibernateDemo.mappers.TrainerMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
@@ -20,14 +22,12 @@ public class TrainerService {
 
     private final TrainingTypeRepo trainingTypeRepo;
 
+    private final TrainerMapper trainerMapper;
 
-    public Trainer createTrainer(int userId, int trainingTypeId, Trainer trainer) {
 
-        trainer.setUser(userRepo.findById(userId)
-                                .orElseThrow(() -> new RuntimeException("User not found with id " + userId)));
+    public Trainer createTrainer(TrainerDto trainerdto) {
 
-        trainer.setTrainingType(trainingTypeRepo.findById(trainingTypeId)
-                                                .orElseThrow(() -> new RuntimeException("Training type not found with id " + trainingTypeId)));
+        Trainer trainer = trainerMapper.toDomain(trainerdto);
 
         log.info("Trainer created");
         return trainerRepo.save(trainer);
@@ -36,5 +36,10 @@ public class TrainerService {
     public Trainer getTrainerById(int id) {
         return trainerRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Trainer not found with id " + id));
+    }
+
+    public void deleteTrainer(int id) {
+        trainerRepo.deleteById(id);
+        log.info("Trainer with id " + id + " was deleted");
     }
 }

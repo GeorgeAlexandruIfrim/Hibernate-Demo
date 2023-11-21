@@ -25,7 +25,12 @@ public class Trainee {
     @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Training> trainings;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "trainee_trainer",
+            joinColumns = @JoinColumn(name = "trainee_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id")
+    )
     private List<Trainer> trainers;
 
     @OneToOne(cascade = CascadeType.PERSIST)
