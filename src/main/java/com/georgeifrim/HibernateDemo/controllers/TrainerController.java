@@ -1,6 +1,7 @@
 package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
+import com.georgeifrim.HibernateDemo.entities.dto.TrainerDto;
 import com.georgeifrim.HibernateDemo.services.TrainerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,20 @@ public class TrainerController {
     private final TrainerService trainerService;
 
     @PutMapping("/add")
-    public ResponseEntity<Trainer> createTrainer(@RequestParam int userId,
-                                                 @RequestParam int trainingTypeId,
-                                                 @RequestBody Trainer trainer) {
+    public ResponseEntity<Trainer> createTrainer(@RequestBody TrainerDto trainerDto) {
        return ResponseEntity.status(HttpStatus.OK)
-                            .body(trainerService.createTrainer(userId, trainingTypeId, trainer));
-//        trainerService.createTrainer(userId, trainingTypeId);
+                            .body(trainerService.createTrainer(trainerDto));
     }
 
     @GetMapping("/byId/{id}")
     public ResponseEntity<Trainer> getTrainerById(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(trainerService.getTrainerById(id));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTrainer(@PathVariable int id){
+        trainerService.deleteTrainer(id);
     }
 
 }

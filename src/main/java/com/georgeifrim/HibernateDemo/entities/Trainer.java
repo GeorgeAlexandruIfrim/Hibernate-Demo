@@ -2,7 +2,6 @@ package com.georgeifrim.HibernateDemo.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private List<Training> trainings;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "trainers")
     private List<Trainee> trainees;
 
     @OneToOne

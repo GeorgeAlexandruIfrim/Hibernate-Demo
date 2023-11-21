@@ -19,9 +19,6 @@ public class TraineeController {
     public Trainee getTraineeById(@PathVariable Integer id){
         return traineeService.getTraineeById(id);
     }
-
-
-
     @GetMapping("/byUserName/{username}")
     public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
 
