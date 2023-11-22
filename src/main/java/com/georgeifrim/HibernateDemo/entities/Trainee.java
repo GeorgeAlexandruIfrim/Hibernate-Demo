@@ -1,16 +1,15 @@
 package com.georgeifrim.HibernateDemo.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Trainee {
 
     @Id
@@ -22,10 +21,11 @@ public class Trainee {
 
     private String address;
 
-    @OneToMany(mappedBy = "trainee", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Training> trainings;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "trainee_trainer",
             joinColumns = @JoinColumn(name = "trainee_id"),
@@ -33,8 +33,19 @@ public class Trainee {
     )
     private List<Trainer> trainers;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trainee)) return false;
+        Trainee trainee = (Trainee) o;
+        return getDate_of_birth().equals(trainee.getDate_of_birth()) && getAddress().equals(trainee.getAddress());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDate_of_birth(), getAddress());
+    }
 }
