@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/trainers")
@@ -27,10 +29,22 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(trainerService.getTrainerById(id));
     }
+    @GetMapping("/byUserName/{username}")
+    public ResponseEntity<Trainer> getTrainerByUserName(@PathVariable String username){
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(trainerService.getTrainerByUserName(username));
+    }
+    @GetMapping("/activeTrainersWithNoTrainees")
+    public List<Trainer> activeTrainersWithNoTrainees(){
+        return trainerService.activeTrainersWithNoTrainees();
+    }
 
     @DeleteMapping("/delete/{id}")
     public void deleteTrainer(@PathVariable int id){
         trainerService.deleteTrainer(id);
     }
+
+
 
 }

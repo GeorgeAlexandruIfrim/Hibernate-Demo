@@ -29,6 +29,12 @@ public class TraineeController {
                 .body(traineeService.getTraineeByUserName(username));
     }
 
+    @GetMapping("/listOfTrainings/{traineeId}")
+    public ResponseEntity<?> getListOfTrainings(@PathVariable int traineeId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(traineeService.getListOfTrainings(traineeId));
+    }
+
     @PutMapping("/add")
     public ResponseEntity<Trainee> addTrainee(@RequestBody TraineeDto traineeDto){
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -52,6 +58,12 @@ public class TraineeController {
     public void enrollTrainer(@PathVariable int traineeId,
                               @PathVariable int trainerId){
         traineeService.enrollTrainer(traineeId, trainerId);
+    }
+
+    @PostMapping("/enrollInTraining/{username}/{trainingId}")
+    public void enrollInTraining(@PathVariable String username,
+                                 @PathVariable int trainingId){
+        traineeService.enrollInTraining(username, trainingId);
     }
 
     @DeleteMapping("/delete/{username}")

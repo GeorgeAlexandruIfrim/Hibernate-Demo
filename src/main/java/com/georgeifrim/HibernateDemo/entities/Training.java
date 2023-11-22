@@ -1,5 +1,7 @@
 package com.georgeifrim.HibernateDemo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,16 +15,19 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "trainee_id")
+    @JsonBackReference
     private Trainee trainee;
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
+    @JsonBackReference
     private Trainer trainer;
 
     @ManyToOne
     @JoinColumn(name = "trainingType_id")
+    @JsonBackReference
     private TrainingType trainingType;
 
     private String name;

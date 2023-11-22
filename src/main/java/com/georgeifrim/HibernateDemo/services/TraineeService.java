@@ -1,18 +1,22 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Trainee;
+import com.georgeifrim.HibernateDemo.entities.Training;
 import com.georgeifrim.HibernateDemo.entities.dto.TraineeDto;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithIdNotFound;
+import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
 import com.georgeifrim.HibernateDemo.mappers.TraineeMapper;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
-import com.georgeifrim.HibernateDemo.repositories.UserRepo;
+import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +27,8 @@ public class TraineeService {
     private final TraineeMapper traineeMapper;
     private final TrainerRepo trainerRepo;
     private final UserService userService;
+
+    private final TrainingRepo trainingRepo;
 
     @Transactional
     public Trainee createTrainee(TraineeDto traineeDto) {
@@ -73,6 +79,7 @@ public class TraineeService {
         log.info("Trainee " + username + " was deleted");
     }
 
+    @Transactional
     public void enrollTrainer(int traineeId, int trainerId) {
         Trainee trainee = traineeRepo.findById(traineeId)
                                         .orElseThrow(() -> new TraineeWithIdNotFound(traineeId));
@@ -83,7 +90,24 @@ public class TraineeService {
         traineeRepo.save(trainee);
     }
 
-    private boolean traineeWithIdExists(int id) {
+    public boolean traineeWithIdExists(int id) {
         return traineeRepo.existsById(id);
+    }
+
+    @Transactional
+    public void enrollInTraining(String username, int trainingId) {
+        Trainee trainee = traineeRepo.findTraineeByUserName(username)
+                .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
+        trainee.getTrainings()
+                .add(trainingRepo.findById(trainingId)
+                        .orElseThrow(() -> new TrainingWithIdNotFound(trainingId)));
+        log.info("Trainee " + username + " was enrolled to training with id " + trainingId);
+        traineeRepo.save(trainee);
+    }
+
+    public List<Training> getListOfTrainings(int traineeId) {
+        Trainee trainee = traineeRepo.findById(traineeId)
+                .orElseThrow(() -> new TraineeWithIdNotFound(traineeId));
+        return trainee.getTrainings();
     }
 }
