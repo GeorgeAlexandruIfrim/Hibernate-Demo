@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Data
 @AllArgsConstructor
-public class TrainingMapper {
+public class TrainingMapper implements Mapper<Training, TrainingDto> {
 
         private final TraineeRepo traineeRepo;
         private final TrainerRepo trainerRepo;
 
         private final TrainingTypeRepo trainingTypeRepo;
 
+        @Override
         public Training toDomain(TrainingDto trainingDto){
             Training training = new Training();
 
@@ -36,4 +37,9 @@ public class TrainingMapper {
 
             return training;
         }
+
+    @Override
+    public TrainingDto toDto(Training training) {
+        return null;
+    }
 }

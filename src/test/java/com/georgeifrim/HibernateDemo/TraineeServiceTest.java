@@ -7,7 +7,6 @@ import com.georgeifrim.HibernateDemo.entities.dto.TraineeDto;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithIdNotFound;
 import com.georgeifrim.HibernateDemo.mappers.TraineeMapper;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
-import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import com.georgeifrim.HibernateDemo.services.TraineeService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -56,7 +55,7 @@ public class TraineeServiceTest {
         when(traineeRepo.save(traineeToBeSaved)).thenReturn(traineeToBeSaved);
 
         //Then
-        Trainee trainee = traineeService.createTrainee(traineeDto);
+        Trainee trainee = traineeService.create(traineeDto);
 
         //Assert
         assertEquals(traineeToBeSaved, trainee);

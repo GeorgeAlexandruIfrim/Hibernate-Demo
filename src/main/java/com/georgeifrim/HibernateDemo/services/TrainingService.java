@@ -3,6 +3,7 @@ package com.georgeifrim.HibernateDemo.services;
 import com.georgeifrim.HibernateDemo.entities.Training;
 import com.georgeifrim.HibernateDemo.entities.dto.TrainingDto;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
+import com.georgeifrim.HibernateDemo.mappers.Mapper;
 import com.georgeifrim.HibernateDemo.mappers.TrainingMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class TrainingService {
 
     private final TrainingRepo trainingRepo;
 
-    private final TrainingMapper trainingMapper;
+    private final Mapper<Training, TrainingDto> trainingMapper;
 
 
     public Training createTraining(TrainingDto trainingDto) {

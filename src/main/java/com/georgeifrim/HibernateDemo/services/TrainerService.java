@@ -2,6 +2,7 @@ package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
 import com.georgeifrim.HibernateDemo.entities.dto.TrainerDto;
+import com.georgeifrim.HibernateDemo.mappers.Mapper;
 import com.georgeifrim.HibernateDemo.mappers.TrainerMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
@@ -20,11 +21,10 @@ public class TrainerService {
 
     private final TrainerRepo trainerRepo;
 
-    private final TrainerMapper trainerMapper;
+    private final Mapper<Trainer, TrainerDto> trainerMapper;
 
 
     public Trainer createTrainer(TrainerDto trainerdto) {
-
 
         Trainer trainer = trainerMapper.toDomain(trainerdto);
 

@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Data
 @AllArgsConstructor
-public class TrainerMapper {
+public class TrainerMapper implements Mapper<Trainer, TrainerDto> {
 
 
     private final TrainingTypeRepo trainingTypeRepo;
     private final TraineeRepo traineeRepo;
     private final UserRepo userRepo;
 
+    @Override
     public Trainer toDomain(TrainerDto trainerDto){
         Trainer trainer = new Trainer();
         trainer.setTrainingType(trainingTypeRepo
@@ -35,6 +36,7 @@ public class TrainerMapper {
         return trainer;
     }
 
+    @Override
     public TrainerDto toDto(Trainer trainer){
         TrainerDto trainerDto = new TrainerDto();
         trainerDto.setTraining_type_id(trainer.getTrainingType().getId());

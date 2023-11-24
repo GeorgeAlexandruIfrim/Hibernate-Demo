@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TraineeMapper {
+public class TraineeMapper implements Mapper<Trainee, TraineeDto> {
 
     @Autowired
     private final UserRepo userRepo;
 
+    @Override
     public Trainee toDomain(TraineeDto traineeDto){
         Trainee trainee = new Trainee();
         trainee.setDate_of_birth(traineeDto.getDate_of_birth());
@@ -22,6 +23,12 @@ public class TraineeMapper {
         trainee.setUser(getUserbyId(traineeDto.getUserId()));
         return trainee;
     }
+
+    @Override
+    public TraineeDto toDto(Trainee trainee) {
+        return null;
+    }
+
     private User getUserbyId(int id){
         return userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
