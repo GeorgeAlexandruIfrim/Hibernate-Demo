@@ -21,7 +21,7 @@ public class UserService {
             throw new RuntimeException("User already exists");
         }
         log.info("User created");
-        return userRepo.save(user);
+        return userRepo.save(user1);
     }
 
     public User updateUser(int id, User user) {
