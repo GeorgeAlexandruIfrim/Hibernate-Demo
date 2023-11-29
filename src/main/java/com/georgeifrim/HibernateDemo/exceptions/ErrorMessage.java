@@ -1,10 +1,5 @@
 package com.georgeifrim.HibernateDemo.exceptions;
 
-public class ErrorMessage {
+public record ErrorMessage(String message) {
 
-    private String message;
-
-    public ErrorMessage(String message){
-        this.message = message;
-    }
 }
