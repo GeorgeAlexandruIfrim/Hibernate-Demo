@@ -1,10 +1,9 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Training;
-import com.georgeifrim.HibernateDemo.entities.dto.TrainingDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainingRequestDto;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
-import com.georgeifrim.HibernateDemo.mappers.Mapper;
-import com.georgeifrim.HibernateDemo.mappers.TrainingMapper;
+import com.georgeifrim.HibernateDemo.mappers.requests.RequestsMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,12 +16,12 @@ public class TrainingService {
 
     private final TrainingRepo trainingRepo;
 
-    private final Mapper<Training, TrainingDto> trainingMapper;
+    private final RequestsMapper<Training, TrainingRequestDto> trainingRequestsMapper;
 
 
-    public Training createTraining(TrainingDto trainingDto) {
+    public Training createTraining(TrainingRequestDto trainingRequestDto) {
 
-        Training training = trainingMapper.toDomain(trainingDto);
+        Training training = trainingRequestsMapper.toEntity(trainingRequestDto);
 
         log.info("Training created");
         return trainingRepo.save(training);

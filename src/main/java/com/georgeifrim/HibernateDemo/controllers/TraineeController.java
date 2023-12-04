@@ -1,7 +1,8 @@
 package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Trainee;
-import com.georgeifrim.HibernateDemo.entities.dto.TraineeDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.services.TraineeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,16 +37,16 @@ public class TraineeController {
     }
 
     @PutMapping("/add")
-    public ResponseEntity<Trainee> addTrainee(@RequestBody TraineeDto traineeDto){
+    public ResponseEntity<TraineeResponseDto> addTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(traineeService.create(traineeDto));
+                .body(traineeService.create(traineeRequestDto));
     }
 
     @PostMapping("/update/{id}")
     public ResponseEntity<Trainee> updateTrainee(@PathVariable int id,
-                                                 @RequestBody TraineeDto traineeDto){
+                                                 @RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.update(id, traineeDto));
+                .body(traineeService.update(id, traineeRequestDto));
     }
     @PostMapping("/updateStatus/{id}")
     public ResponseEntity<Trainee> updateActive(@RequestParam boolean status,

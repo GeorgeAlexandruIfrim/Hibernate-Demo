@@ -1,8 +1,8 @@
-package com.georgeifrim.HibernateDemo.mappers;
+package com.georgeifrim.HibernateDemo.mappers.requests;
 
 import com.georgeifrim.HibernateDemo.entities.Trainee;
 import com.georgeifrim.HibernateDemo.entities.User;
-import com.georgeifrim.HibernateDemo.entities.dto.TraineeDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,22 +10,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TraineeMapper implements Mapper<Trainee, TraineeDto> {
+public class TraineeRequestsMapper implements RequestsMapper<Trainee, TraineeRequestDto> {
 
     @Autowired
     private final UserRepo userRepo;
 
     @Override
-    public Trainee toDomain(TraineeDto traineeDto){
+    public Trainee toEntity(TraineeRequestDto traineeRequestDto){
         Trainee trainee = new Trainee();
-        trainee.setDate_of_birth(traineeDto.getDate_of_birth());
-        trainee.setAddress(traineeDto.getAddress());
-        trainee.setUser(getUserbyId(traineeDto.getUserId()));
+        trainee.setDate_of_birth(traineeRequestDto.getDate_of_birth());
+        trainee.setAddress(traineeRequestDto.getAddress());
+        trainee.setUser(getUserbyId(traineeRequestDto.getUserId()));
         return trainee;
     }
 
     @Override
-    public TraineeDto toDto(Trainee trainee) {
+    public TraineeRequestDto toRequestDto(Trainee trainee) {
         return null;
     }
 
