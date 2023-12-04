@@ -10,6 +10,7 @@ public abstract class EntityService <Entity, EntityRequestDto, EntityResponseDto
     @Autowired
     public RequestsMapper<Entity, EntityRequestDto> requestsMapper;
 
+
     @Autowired
     public ResponseMapper<Entity, EntityResponseDto> responseMapper;
 
