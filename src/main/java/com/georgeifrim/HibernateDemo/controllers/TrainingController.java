@@ -1,7 +1,7 @@
 package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Training;
-import com.georgeifrim.HibernateDemo.entities.dto.TrainingDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainingRequestDto;
 import com.georgeifrim.HibernateDemo.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,9 @@ public class TrainingController {
     private final TrainingService trainingService;
 
     @PutMapping("/add")
-    public ResponseEntity<Training> createTraining(@RequestBody TrainingDto trainingDto) {
+    public ResponseEntity<Training> createTraining(@RequestBody TrainingRequestDto trainingRequestDto) {
        return ResponseEntity.status(HttpStatus.OK)
-                            .body(trainingService.createTraining(trainingDto));
+                            .body(trainingService.createTraining(trainingRequestDto));
     }
 
     @GetMapping("byId/{id}")

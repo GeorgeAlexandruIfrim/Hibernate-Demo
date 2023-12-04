@@ -1,11 +1,11 @@
-package com.georgeifrim.HibernateDemo.entities.dto;
+package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class TrainingDto {
+public class TrainingRequestDto {
 
     private LocalDate date;
     private int duration_minutes;

@@ -1,7 +1,7 @@
-package com.georgeifrim.HibernateDemo.mappers;
+package com.georgeifrim.HibernateDemo.mappers.requests;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
-import com.georgeifrim.HibernateDemo.entities.dto.TrainerDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainerRequestDto;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Data
 @AllArgsConstructor
-public class TrainerMapper implements Mapper<Trainer, TrainerDto> {
+public class TrainerRequestsMapper implements RequestsMapper<Trainer, TrainerRequestDto> {
 
 
     private final TrainingTypeRepo trainingTypeRepo;
@@ -20,15 +20,15 @@ public class TrainerMapper implements Mapper<Trainer, TrainerDto> {
     private final UserRepo userRepo;
 
     @Override
-    public Trainer toDomain(TrainerDto trainerDto){
+    public Trainer toEntity(TrainerRequestDto trainerRequestDto){
         Trainer trainer = new Trainer();
         trainer.setTrainingType(trainingTypeRepo
-                                    .findById(trainerDto.getTraining_type_id())
+                                    .findById(trainerRequestDto.getTraining_type_id())
                                     .orElseThrow(() -> new RuntimeException("Training type not found")));
 
-        if (!userIsATrainee(trainerDto.getUserId())) {
+        if (!userIsATrainee(trainerRequestDto.getUserId())) {
             trainer.setUser(userRepo.
-                    findById(trainerDto.getUserId())
+                    findById(trainerRequestDto.getUserId())
                     .orElseThrow(() -> new RuntimeException("User not found")));
         }else
             throw new RuntimeException("User is already a trainee");
@@ -37,11 +37,11 @@ public class TrainerMapper implements Mapper<Trainer, TrainerDto> {
     }
 
     @Override
-    public TrainerDto toDto(Trainer trainer){
-        TrainerDto trainerDto = new TrainerDto();
-        trainerDto.setTraining_type_id(trainer.getTrainingType().getId());
-        trainerDto.setUserId(trainer.getUser().getId());
-        return trainerDto;
+    public TrainerRequestDto toRequestDto(Trainer trainer){
+        TrainerRequestDto trainerRequestDto = new TrainerRequestDto();
+        trainerRequestDto.setTraining_type_id(trainer.getTrainingType().getId());
+        trainerRequestDto.setUserId(trainer.getUser().getId());
+        return trainerRequestDto;
     }
 
     private boolean userIsATrainee(int userId) {
