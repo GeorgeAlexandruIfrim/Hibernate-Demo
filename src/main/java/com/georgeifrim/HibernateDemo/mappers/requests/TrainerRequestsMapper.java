@@ -1,6 +1,7 @@
 package com.georgeifrim.HibernateDemo.mappers.requests;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
+import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainerRequestDto;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
@@ -21,27 +22,16 @@ public class TrainerRequestsMapper implements RequestsMapper<Trainer, TrainerReq
 
     @Override
     public Trainer toEntity(TrainerRequestDto trainerRequestDto){
-        Trainer trainer = new Trainer();
-        trainer.setTrainingType(trainingTypeRepo
-                                    .findById(trainerRequestDto.getTraining_type_id())
-                                    .orElseThrow(() -> new RuntimeException("Training type not found")));
-
-        if (!userIsATrainee(trainerRequestDto.getUserId())) {
-            trainer.setUser(userRepo.
-                    findById(trainerRequestDto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found")));
-        }else
-            throw new RuntimeException("User is already a trainee");
-
-        return trainer;
+        var userToBeSaved = new User(trainerRequestDto.first_name(), trainerRequestDto.last_name(), false);
+        return Trainer.builder()
+                .trainingType(trainingTypeRepo.findByName(trainerRequestDto.trainingTypeName()))
+                .user(userRepo.save(userToBeSaved))
+                .build();
     }
 
     @Override
     public TrainerRequestDto toRequestDto(Trainer trainer){
-        TrainerRequestDto trainerRequestDto = new TrainerRequestDto();
-        trainerRequestDto.setTraining_type_id(trainer.getTrainingType().getId());
-        trainerRequestDto.setUserId(trainer.getUser().getId());
-        return trainerRequestDto;
+        return null;
     }
 
     private boolean userIsATrainee(int userId) {

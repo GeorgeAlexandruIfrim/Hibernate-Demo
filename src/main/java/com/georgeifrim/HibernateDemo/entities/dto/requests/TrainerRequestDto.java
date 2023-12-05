@@ -1,10 +1,13 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
-import lombok.Data;
+public record TrainerRequestDto(
+        String first_name,
+        String last_name,
+        String trainingTypeName
+) {
 
-@Data
-public class TrainerRequestDto {
+    public String trainerRequestDtoUsername(){
+        return first_name + "." + last_name;
+    }
 
-    private int training_type_id;
-    private int userId;
 }

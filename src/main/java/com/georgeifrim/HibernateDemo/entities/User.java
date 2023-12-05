@@ -1,6 +1,8 @@
 package com.georgeifrim.HibernateDemo.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,6 +14,8 @@ import java.util.Random;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     

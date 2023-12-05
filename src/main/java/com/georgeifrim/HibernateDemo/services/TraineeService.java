@@ -8,29 +8,36 @@ import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
+import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
+import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Log4j2
+@Slf4j
 public class TraineeService extends EntityService<Trainee, TraineeRequestDto, TraineeResponseDto> {
 
     private final TraineeRepo traineeRepo;
     private final TrainerRepo trainerRepo;
     private final UserService userService;
+
+    private final UserRepo userRepo;
     private final TrainingRepo trainingRepo;
 
     @Transactional
     @Override
     public TraineeResponseDto create(TraineeRequestDto traineeRequestDto) {
+        String username = traineeRequestDto.traineeRequestDtoUsername();
+        if(userService.userWithUsernameExists(username))
+            throw new UserWithUsernameAlreadyExists(username);
 
         var traineeSaved = requestsMapper.toEntity(traineeRequestDto);
         traineeRepo.save(traineeSaved);
@@ -59,9 +66,9 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
             throw new TraineeWithIdNotFound(id);
         }
         Trainee trainee = traineeRepo.findById(id).get();
-        trainee.setDate_of_birth(traineeRequestDto.getDate_of_birth());
-        trainee.setAddress(traineeRequestDto.getAddress());
-        trainee.setUser(userService.getUserById(traineeRequestDto.getUserId()));
+        trainee.setDate_of_birth(traineeRequestDto.date_of_birth());
+        trainee.setAddress(traineeRequestDto.address());
+        trainee.setUser(userRepo.findByUsername(traineeRequestDto.traineeRequestDtoUsername()));
         log.info("Trainee with id " + id + " was updated");
         return traineeRepo.save(trainee);
     }

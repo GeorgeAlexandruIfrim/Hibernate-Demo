@@ -17,11 +17,14 @@ public class TraineeRequestsMapper implements RequestsMapper<Trainee, TraineeReq
 
     @Override
     public Trainee toEntity(TraineeRequestDto traineeRequestDto){
-        Trainee trainee = new Trainee();
-        trainee.setDate_of_birth(traineeRequestDto.getDate_of_birth());
-        trainee.setAddress(traineeRequestDto.getAddress());
-        trainee.setUser(getUserbyId(traineeRequestDto.getUserId()));
-        return trainee;
+
+        var userToBeCreated = new User(traineeRequestDto.first_name(), traineeRequestDto.last_name(), false);
+
+        return Trainee.builder()
+                .address(traineeRequestDto.address())
+                .date_of_birth(traineeRequestDto.date_of_birth())
+                .user(userRepo.save(userToBeCreated))
+                .build();
     }
 
     @Override

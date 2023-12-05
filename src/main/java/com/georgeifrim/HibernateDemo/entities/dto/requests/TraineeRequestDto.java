@@ -1,15 +1,19 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Data
-public class TraineeRequestDto {
+public record TraineeRequestDto(
+         String first_name,
+         String last_name,
+         LocalDate date_of_birth,
+         String address
+) {
 
-    private LocalDate date_of_birth;
-    private String address;
-    private int userId;
-
-
+    public String traineeRequestDtoUsername(){
+        return first_name + "." + last_name;
+    }
 }
