@@ -3,12 +3,14 @@ package com.georgeifrim.HibernateDemo.services;
 import com.georgeifrim.HibernateDemo.entities.Trainee;
 import com.georgeifrim.HibernateDemo.entities.Training;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
+import com.georgeifrim.HibernateDemo.mappers.responses.TraineeCompleteResponseMapper;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
@@ -28,10 +30,10 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     private final TraineeRepo traineeRepo;
     private final TrainerRepo trainerRepo;
     private final UserService userService;
-
     private final UserRepo userRepo;
     private final TrainingRepo trainingRepo;
 
+    private final TraineeCompleteResponseMapper traineeCompleteResponseMapper;
     @Transactional
     @Override
     public TraineeResponseDto create(TraineeRequestDto traineeRequestDto) {
@@ -51,12 +53,11 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
                 .orElseThrow(() -> new TraineeWithIdNotFound(id));
     }
 
+    public TraineeCompleteResponseDto getByUserName(String username) {
 
-    @Override
-    public Trainee getByUserName(String username) {
-
-         return traineeRepo.findTraineeByUserName(username)
+         Trainee trainee = traineeRepo.findTraineeByUserName(username)
                  .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
+         return  traineeCompleteResponseMapper.toResponseDto(trainee);
     }
 
     @Override

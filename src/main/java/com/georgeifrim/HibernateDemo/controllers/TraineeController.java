@@ -2,6 +2,7 @@ package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Trainee;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.services.TraineeService;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class TraineeController {
 
 
     @GetMapping("/byUserName/{username}")
-    public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
+    public ResponseEntity<TraineeCompleteResponseDto> getTraineeByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(traineeService.getByUserName(username));
