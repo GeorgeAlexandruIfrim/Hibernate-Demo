@@ -2,6 +2,7 @@ package com.georgeifrim.HibernateDemo.exceptions;
 
 import com.georgeifrim.HibernateDemo.exceptions.login.PasswordNotMatching;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotFound;
+import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainingType.TrainingTypeDoesNotExist;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessage> handleInvalidPasswordForUser(Exception e){
         var err = new ErrorMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+    }
+    @ExceptionHandler({TrainerWithUsernameNotFound.class})
+    public ResponseEntity<ErrorMessage> handleTrainerWithUsernameNotExists(Exception e){
+        var err = new ErrorMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 }

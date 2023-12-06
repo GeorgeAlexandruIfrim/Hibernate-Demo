@@ -1,49 +1,28 @@
 package com.georgeifrim.HibernateDemo.mappers.responses;
 
-import com.georgeifrim.HibernateDemo.entities.Trainee;
 import com.georgeifrim.HibernateDemo.entities.Trainer;
 import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
-
-public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, TraineeCompleteResponseDto>{
+public class TrainerCompleteResponseMapper implements ResponseMapper<Trainer, TrainerCompleteResponseDto> {
 
     @Autowired
     private TraineeResponseMapper traineeResponseMapper;
+
     @Override
-    public Trainee toEntity(TraineeCompleteResponseDto traineeCompleteResponseDto) {
+    public Trainer toEntity(TrainerCompleteResponseDto trainerCompleteResponseDto) {
         return null;
     }
 
     @Override
-    public TraineeCompleteResponseDto toResponseDto(Trainee trainee) {
-        User user = trainee.getUser();
-        List<TrainerCompleteResponseDto> trainerResponseList = trainee.getTrainers().stream()
-                .map(trainerToDto)
-                .toList();
-
-        return new TraineeCompleteResponseDto(
-                user.getFirst_name(),
-                user.getLast_name(),
-                trainee.getDate_of_birth(),
-                trainee.getAddress(),
-                user.isActive(),
-                trainerResponseList
-                );
-
-    }
-
-    Function<Trainer, TrainerCompleteResponseDto> trainerToDto = trainer -> {
+    public TrainerCompleteResponseDto toResponseDto(Trainer trainer) {
         User user = trainer.getUser();
         String username = user.getUsername();
         String first_name = user.getFirst_name();
@@ -54,8 +33,12 @@ public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, Tr
                 .map(trainee -> traineeResponseMapper.toResponseDto(trainee))
                 .toList();
 
-        return new TrainerCompleteResponseDto(username, first_name, last_name, trainingTypeName, traineeList);
-    };
-
-
+        return new TrainerCompleteResponseDto(
+                username,
+                first_name,
+                last_name,
+                trainingTypeName,
+                traineeList
+        );
+    }
 }

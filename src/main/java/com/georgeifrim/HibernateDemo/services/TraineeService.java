@@ -60,30 +60,33 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
          return  traineeCompleteResponseMapper.toResponseDto(trainee);
     }
 
-    @Override
     @Transactional
-    public Trainee update(Integer id, TraineeRequestDto traineeRequestDto) {
-        if(!traineeWithIdExists(id)){
-            throw new TraineeWithIdNotFound(id);
-        }
-        Trainee trainee = traineeRepo.findById(id).get();
-        trainee.setDate_of_birth(traineeRequestDto.date_of_birth());
-        trainee.setAddress(traineeRequestDto.address());
-        trainee.setUser(userRepo.findByUsername(traineeRequestDto.traineeRequestDtoUsername()));
-        log.info("Trainee with id " + id + " was updated");
-        return traineeRepo.save(trainee);
+    public TraineeCompleteResponseDto update(TraineeRequestDto traineeRequestDto) {
+        String username = traineeRequestDto.first_name() + "." + traineeRequestDto.last_name();
+
+        Trainee traineeToBeUpdated = traineeRepo
+                .findTraineeByUserName(username)
+                .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
+
+        traineeToBeUpdated.setAddress(traineeRequestDto.address());
+        traineeToBeUpdated.setDate_of_birth(traineeRequestDto.date_of_birth());
+        traineeRepo.save(traineeToBeUpdated);
+        log.info("Trainee with username " + username + " was updated");
+
+        return traineeCompleteResponseMapper.toResponseDto(traineeToBeUpdated);
     }
 
     @Override
     @Transactional
-    public Trainee updateActive(Integer id, boolean status) {
-        if(!traineeWithIdExists(id)){
-            throw new TraineeWithIdNotFound(id);
-        }
-        Trainee existingTrainee = traineeRepo.findById(id).get();
-        existingTrainee.getUser().setActive(status);
-        log.info("Trainee with id " + id + " was updated");
-        return traineeRepo.save(existingTrainee);
+    public Trainee updateActive(String username, boolean status) {
+        Trainee traineeToBeUpdated = traineeRepo
+                .findTraineeByUserName(username)
+                .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
+
+        traineeToBeUpdated.getUser().setActive(status);
+
+        log.info("Trainee with username " + username + " was updated");
+        return traineeRepo.save(traineeToBeUpdated);
     }
     @Override
     public void delete(String username) {
@@ -104,8 +107,8 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
         traineeRepo.save(trainee);
     }
 
-    public boolean traineeWithIdExists(int id) {
-        return traineeRepo.existsById(id);
+    public boolean traineeWithUsernameExists(String username) {
+        return traineeRepo.existsByUserName(username);
     }
 
     @Transactional

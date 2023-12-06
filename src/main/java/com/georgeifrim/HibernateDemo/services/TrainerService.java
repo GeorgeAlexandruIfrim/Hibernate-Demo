@@ -1,12 +1,16 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
+import com.georgeifrim.HibernateDemo.entities.TrainingType;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainerRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerResponseDto;
+import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainingType.TrainingTypeDoesNotExist;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
 import com.georgeifrim.HibernateDemo.mappers.requests.RequestsMapper;
 import com.georgeifrim.HibernateDemo.mappers.responses.ResponseMapper;
+import com.georgeifrim.HibernateDemo.mappers.responses.TrainerCompleteResponseMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
 import lombok.AllArgsConstructor;
@@ -25,6 +29,8 @@ public class TrainerService {
     private final UserService userService;
 
     private final TrainingTypeRepo trainingTypeRepo;
+
+    private final TrainerCompleteResponseMapper trainerCompleteResponseMapper;
 
     private final RequestsMapper<Trainer, TrainerRequestDto> trainerRequestsMapper;
     private final ResponseMapper<Trainer, TrainerResponseDto> trainerResponseMapper;
@@ -53,15 +59,28 @@ public class TrainerService {
         log.info("Trainer with id " + id + " was deleted");
     }
 
-    public Trainer getTrainerByUserName(String username) {
-        return trainerRepo.findByUserName(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username " + username));
+    public TrainerCompleteResponseDto getTrainerByUserName(String username) {
+        Trainer existingTrainer = trainerRepo.findByUserName(username)
+                .orElseThrow(() -> new RuntimeException("Trainer with username " + username + " not found"));
+        return trainerCompleteResponseMapper.toResponseDto(existingTrainer);
     }
 
-    public List<Trainer> activeTrainersWithNoTrainees() {
+    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees() {
         return trainerRepo.findAllByUserIsActive(true)
                 .stream()
                 .filter(trainer -> trainer.getTrainees().isEmpty())
+                .map(trainerCompleteResponseMapper::toResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    public TrainerCompleteResponseDto updateTrainer(TrainerRequestDto trainerRequestDto) {
+        TrainingType trainingType = trainingTypeRepo.findByName(trainerRequestDto.trainingTypeName());
+        String username = trainerRequestDto.trainerRequestDtoUsername();
+        Trainer toBeUpdated = trainerRepo.findByUserName(username)
+                .orElseThrow(() -> new TrainerWithUsernameNotFound(username));
+        toBeUpdated.setTrainingType(trainingType);
+        var trainerSaved = trainerRepo.save(toBeUpdated);
+        log.info("Trainer " + username + " was updated!");
+        return trainerCompleteResponseMapper.toResponseDto(trainerSaved);
     }
 }

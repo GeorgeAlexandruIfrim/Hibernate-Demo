@@ -2,6 +2,7 @@ package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainerRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerResponseDto;
 import com.georgeifrim.HibernateDemo.services.TrainerService;
 import lombok.AllArgsConstructor;
@@ -31,13 +32,18 @@ public class TrainerController {
                 .body(trainerService.getTrainerById(id));
     }
     @GetMapping("/byUserName/{username}")
-    public ResponseEntity<Trainer> getTrainerByUserName(@PathVariable String username){
+    public ResponseEntity<TrainerCompleteResponseDto> getTrainerByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(trainerService.getTrainerByUserName(username));
     }
+    @PutMapping("/update")
+    public ResponseEntity<TrainerCompleteResponseDto> update(@RequestBody TrainerRequestDto trainerRequestDto){
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(trainerService.updateTrainer(trainerRequestDto));
+    }
     @GetMapping("/activeTrainersWithNoTrainees")
-    public List<Trainer> activeTrainersWithNoTrainees(){
+    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees(){
         return trainerService.activeTrainersWithNoTrainees();
     }
 

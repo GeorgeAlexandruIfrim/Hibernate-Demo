@@ -43,17 +43,16 @@ public class TraineeController {
                 .body(traineeService.create(traineeRequestDto));
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<Trainee> updateTrainee(@PathVariable int id,
-                                                 @RequestBody TraineeRequestDto traineeRequestDto){
+    @PostMapping("/update")
+    public ResponseEntity<TraineeCompleteResponseDto> updateTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.update(id, traineeRequestDto));
+                .body(traineeService.update(traineeRequestDto));
     }
-    @PostMapping("/updateStatus/{id}")
+    @PostMapping("/updateStatus")
     public ResponseEntity<Trainee> updateActive(@RequestParam boolean status,
-                                                @PathVariable int id){
+                                                @RequestParam String username){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.updateActive(id, status));
+                .body(traineeService.updateActive(username, status));
     }
 
     @PostMapping("/enrollTrainer/{traineeId}/{trainerId}")
