@@ -1,6 +1,8 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.User;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.ChangePasswordRequest;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.LoginRequest;
 import com.georgeifrim.HibernateDemo.exceptions.login.PasswordNotMatching;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameNotExist;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
@@ -14,7 +16,9 @@ public class LoginService {
     private final UserRepo userRepo;
 
 
-    public boolean login(String username, String password){
+    public boolean login(LoginRequest loginRequest){
+        String username = loginRequest.username();
+        String password = loginRequest.password();
        if(userWithUsernameExist(username) && userPasswordMatch(username, password))
            return true;
        else
@@ -39,7 +43,9 @@ public class LoginService {
     }
 
 
-    public void changePassword(String username, String newPassword) {
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        String username = changePasswordRequest.username();
+        String newPassword = changePasswordRequest.newPassword();
         User user = userRepo.findByUsername(username);
         user.setPassword(newPassword);
         userRepo.save(user);

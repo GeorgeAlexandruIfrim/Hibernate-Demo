@@ -1,13 +1,14 @@
 package com.georgeifrim.HibernateDemo.controllers;
 
-import com.georgeifrim.HibernateDemo.repositories.UserRepo;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.ChangePasswordRequest;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.LoginRequest;
 import com.georgeifrim.HibernateDemo.services.LoginService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,21 +18,19 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @GetMapping
-    public ResponseEntity login(@RequestParam String username, @RequestParam String password){
+    @PutMapping
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest){
 
-        loginService.login(username, password);
+        loginService.login(loginRequest);
 
             return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/changePassword")
-    public ResponseEntity changePassword(@RequestParam String username,
-                                         @RequestParam String oldPassword,
-                                         @RequestParam String newPassword){
-
-        loginService.login(username, oldPassword);
-        loginService.changePassword(username, newPassword);
+    @PutMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
+        var loginRequest = new LoginRequest(changePasswordRequest.username(), changePasswordRequest.oldPassword());
+        loginService.login(loginRequest);
+        loginService.changePassword(changePasswordRequest);
             return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
