@@ -16,7 +16,7 @@ public class UserService {
 
     @Transactional
     public User createUser(User user) {
-        User user1 = new User(user.getFirst_name(), user.getLast_name(), user.isActive());
+        User user1 = new User(user.getFirstName(), user.getLastName(), user.isActive());
         if(userWithUsernameExists(user1.getUsername())) {
             throw new RuntimeException("User already exists");
         }
@@ -30,9 +30,9 @@ public class UserService {
         }
         log.info("User updated");
         User existingUser = userRepo.findById(id).get();
-        existingUser.setFirst_name(user.getFirst_name());
-        existingUser.setLast_name(user.getLast_name());
-        existingUser.setUsername(user.getFirst_name() + "." + user.getLast_name());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setUsername(user.getFirstName() + "." + user.getLastName());
         existingUser.setActive(user.isActive());
         return userRepo.save(existingUser);
     }

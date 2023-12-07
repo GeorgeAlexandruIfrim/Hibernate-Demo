@@ -26,7 +26,7 @@ public class TrainingRequestsMapper implements RequestsMapper<Training, Training
             Training training = new Training();
 
             training.setDate(trainingRequestDto.getDate());
-            training.setDuration_minutes(trainingRequestDto.getDuration_minutes());
+            training.setDurationMinutes(trainingRequestDto.getDuration_minutes());
             training.setName(trainingRequestDto.getName());
             training.setTrainee(traineeRepo.findById(trainingRequestDto.getTrainee_id())
                                             .orElseThrow(() -> new TraineeWithIdNotFound(trainingRequestDto.getTrainee_id())));

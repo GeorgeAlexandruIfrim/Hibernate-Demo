@@ -1,13 +1,34 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
-public record TrainerRequestDto(
-        String first_name,
-        String last_name,
-        String trainingTypeName
-) {
+public class TrainerRequestDto implements RequestDto {
 
-    public String trainerRequestDtoUsername(){
-        return first_name + "." + last_name;
+    private String firstName;
+    private String lastName;
+    private String trainingTypeName;
+
+    @Override
+    public String getFirstName() {
+        return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getTrainingTypeName() {
+        return trainingTypeName;
+    }
+
+    public void setTrainingTypeName(String trainingTypeName) {
+        this.trainingTypeName = trainingTypeName;
+    }
 }

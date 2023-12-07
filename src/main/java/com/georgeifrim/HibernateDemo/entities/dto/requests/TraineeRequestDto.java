@@ -1,19 +1,45 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-
 import java.time.LocalDate;
 
-public record TraineeRequestDto(
-         String first_name,
-         String last_name,
-         LocalDate date_of_birth,
-         String address
-) {
+public class TraineeRequestDto implements RequestDto {
 
-    public String traineeRequestDtoUsername(){
-        return first_name + "." + last_name;
+    String firstName;
+    String lastName;
+    LocalDate dateOfBirth;
+    String address;
+
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

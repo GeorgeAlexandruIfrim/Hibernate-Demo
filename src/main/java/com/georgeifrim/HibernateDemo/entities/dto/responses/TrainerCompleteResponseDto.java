@@ -4,8 +4,8 @@ import java.util.List;
 
 public record TrainerCompleteResponseDto(
         String username,
-        String first_name,
-        String last_name,
+        String firstName,
+        String lastName,
         String trainingTypeName,
         List<TraineeResponseDto> traineeList
 ) {

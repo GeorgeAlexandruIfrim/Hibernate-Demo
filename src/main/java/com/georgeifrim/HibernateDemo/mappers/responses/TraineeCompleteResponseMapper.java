@@ -6,13 +6,11 @@ import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -33,8 +31,8 @@ public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, Tr
                 .toList();
 
         return new TraineeCompleteResponseDto(
-                user.getFirst_name(),
-                user.getLast_name(),
+                user.getFirstName(),
+                user.getLastName(),
                 trainee.getDate_of_birth(),
                 trainee.getAddress(),
                 user.isActive(),
@@ -46,8 +44,8 @@ public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, Tr
     Function<Trainer, TrainerCompleteResponseDto> trainerToDto = trainer -> {
         User user = trainer.getUser();
         String username = user.getUsername();
-        String first_name = user.getFirst_name();
-        String last_name = user.getLast_name();
+        String first_name = user.getFirstName();
+        String last_name = user.getLastName();
         String trainingTypeName = trainer.getTrainingType().getName();
         List<TraineeResponseDto> traineeList = trainer.getTrainees()
                 .stream()

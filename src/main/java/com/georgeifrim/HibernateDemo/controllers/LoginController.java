@@ -28,7 +28,7 @@ public class LoginController {
 
     @PutMapping("/changePassword")
     public ResponseEntity changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
-        var loginRequest = new LoginRequest(changePasswordRequest.username(), changePasswordRequest.oldPassword());
+        var loginRequest = new LoginRequest(changePasswordRequest.getUsername(), changePasswordRequest.getOldPassword());
         loginService.login(loginRequest);
         loginService.changePassword(changePasswordRequest);
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -37,7 +37,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     @Transactional
     @Override
     public TraineeResponseDto create(TraineeRequestDto traineeRequestDto) {
-        String username = traineeRequestDto.traineeRequestDtoUsername();
+        String username = traineeRequestDto.getUsername();
         if(userService.userWithUsernameExists(username))
             throw new UserWithUsernameAlreadyExists(username);
 
@@ -62,14 +62,14 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
 
     @Transactional
     public TraineeCompleteResponseDto update(TraineeRequestDto traineeRequestDto) {
-        String username = traineeRequestDto.first_name() + "." + traineeRequestDto.last_name();
+        String username = traineeRequestDto.getFirstName() + "." + traineeRequestDto.getLastName();
 
         Trainee traineeToBeUpdated = traineeRepo
                 .findTraineeByUserName(username)
                 .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
 
-        traineeToBeUpdated.setAddress(traineeRequestDto.address());
-        traineeToBeUpdated.setDate_of_birth(traineeRequestDto.date_of_birth());
+        traineeToBeUpdated.setAddress(traineeRequestDto.getAddress());
+        traineeToBeUpdated.setDate_of_birth(traineeRequestDto.getDateOfBirth());
         traineeRepo.save(traineeToBeUpdated);
         log.info("Trainee with username " + username + " was updated");
 

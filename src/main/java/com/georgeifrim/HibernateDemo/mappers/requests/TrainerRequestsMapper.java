@@ -22,9 +22,9 @@ public class TrainerRequestsMapper implements RequestsMapper<Trainer, TrainerReq
 
     @Override
     public Trainer toEntity(TrainerRequestDto trainerRequestDto){
-        var userToBeSaved = new User(trainerRequestDto.first_name(), trainerRequestDto.last_name(), false);
+        var userToBeSaved = new User(trainerRequestDto.getFirstName(), trainerRequestDto.getLastName(), false);
         return Trainer.builder()
-                .trainingType(trainingTypeRepo.findByName(trainerRequestDto.trainingTypeName()))
+                .trainingType(trainingTypeRepo.findByName(trainerRequestDto.getTrainingTypeName()))
                 .user(userRepo.save(userToBeSaved))
                 .build();
     }

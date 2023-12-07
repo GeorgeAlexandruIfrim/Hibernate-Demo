@@ -37,11 +37,11 @@ public class TrainerService {
 
 
     public TrainerResponseDto createTrainer(TrainerRequestDto trainerRequestDto) {
-        String username = trainerRequestDto.trainerRequestDtoUsername();
+        String username = trainerRequestDto.getUsername();
         if(userService.userWithUsernameExists(username))
             throw new UserWithUsernameAlreadyExists(username);
-        else if (!trainingTypeRepo.existsByName(trainerRequestDto.trainingTypeName()))
-            throw new TrainingTypeDoesNotExist(trainerRequestDto.trainingTypeName());
+        else if (!trainingTypeRepo.existsByName(trainerRequestDto.getTrainingTypeName()))
+            throw new TrainingTypeDoesNotExist(trainerRequestDto.getTrainingTypeName());
 
         Trainer trainer = trainerRequestsMapper.toEntity(trainerRequestDto);
         log.info("Trainer " + username + " created");
@@ -74,8 +74,8 @@ public class TrainerService {
     }
 
     public TrainerCompleteResponseDto updateTrainer(TrainerRequestDto trainerRequestDto) {
-        TrainingType trainingType = trainingTypeRepo.findByName(trainerRequestDto.trainingTypeName());
-        String username = trainerRequestDto.trainerRequestDtoUsername();
+        TrainingType trainingType = trainingTypeRepo.findByName(trainerRequestDto.getTrainingTypeName());
+        String username = trainerRequestDto.getUsername();
         Trainer toBeUpdated = trainerRepo.findByUserName(username)
                 .orElseThrow(() -> new TrainerWithUsernameNotFound(username));
         toBeUpdated.setTrainingType(trainingType);

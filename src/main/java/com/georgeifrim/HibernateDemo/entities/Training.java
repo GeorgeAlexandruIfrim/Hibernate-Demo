@@ -1,7 +1,6 @@
 package com.georgeifrim.HibernateDemo.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,6 +31,6 @@ public class Training {
 
     private String name;
     private LocalDate date;
-    private int duration_minutes;
+    private int durationMinutes;
 
 }

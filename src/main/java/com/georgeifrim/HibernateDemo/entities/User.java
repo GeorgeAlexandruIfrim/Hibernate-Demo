@@ -22,8 +22,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
     private boolean isActive;
@@ -32,10 +32,10 @@ public class User {
     @Temporal(TemporalType.DATE)
     private LocalDate created;
     
-    public User(String first_name, String last_name, boolean isActive) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.username = first_name + "." + last_name;
+    public User(String firstName, String lastName, boolean isActive) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = firstName + "." + lastName;
         this.password = passwordGenerator();
         this.isActive = isActive;
     }
