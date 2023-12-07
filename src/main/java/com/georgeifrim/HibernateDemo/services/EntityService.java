@@ -16,8 +16,6 @@ public abstract class EntityService <Entity, EntityRequestDto, EntityResponseDto
     public abstract EntityResponseDto create(EntityRequestDto entityRequestDto);
     public abstract Entity getById(Integer id);
 
-//    public abstract Entity getByUserName(String username);
-//    public abstract Entity update(EntityRequestDto entityRequestDto);
     public abstract Entity updateActive(String username, boolean status);
     public abstract void delete(String username);
 

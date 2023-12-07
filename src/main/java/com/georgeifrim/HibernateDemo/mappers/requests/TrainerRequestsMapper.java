@@ -34,8 +34,4 @@ public class TrainerRequestsMapper implements RequestsMapper<Trainer, TrainerReq
         return null;
     }
 
-    private boolean userIsATrainee(int userId) {
-        return traineeRepo.findById(userId).isPresent();
-    }
-
 }
