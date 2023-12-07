@@ -62,7 +62,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
 
     @Transactional
     public TraineeCompleteResponseDto update(TraineeRequestDto traineeRequestDto) {
-        String username = traineeRequestDto.getFirstName() + "." + traineeRequestDto.getLastName();
+        String username = traineeRequestDto.getUsername();
 
         Trainee traineeToBeUpdated = traineeRepo
                 .findTraineeByUserName(username)
