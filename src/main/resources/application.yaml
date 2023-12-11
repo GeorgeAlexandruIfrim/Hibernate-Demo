@@ -1,5 +1,7 @@
-# Database Configuration
 spring:
+  server:
+    port: 8080
+# Database Configuration
   datasource:
     url: jdbc:mysql://localhost:3306/hibernate-demo
     username: root
@@ -20,3 +22,5 @@ spring:
 #  level:
 #    org:
 #      springframework: DEBUG
+
+test: default

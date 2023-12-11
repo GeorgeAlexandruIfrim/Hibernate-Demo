@@ -16,11 +16,6 @@ public class TrainerCompleteResponseMapper implements ResponseMapper<Trainer, Tr
     private TraineeResponseMapper traineeResponseMapper;
 
     @Override
-    public Trainer toEntity(TrainerCompleteResponseDto trainerCompleteResponseDto) {
-        return null;
-    }
-
-    @Override
     public TrainerCompleteResponseDto toResponseDto(Trainer trainer) {
         User user = trainer.getUser();
         String username = user.getUsername();
