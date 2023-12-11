@@ -65,10 +65,10 @@ public class TrainerService {
         return trainerCompleteResponseMapper.toResponseDto(existingTrainer);
     }
 
-    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees() {
-        return trainerRepo.findAllByUserIsActive(true)
+    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees(int numberOfTrainees, boolean activeStatus) {
+        return trainerRepo.findAllByUserIsActive(activeStatus)
                 .stream()
-                .filter(trainer -> trainer.getTrainees().isEmpty())
+                .filter(trainer -> trainer.getTrainees().size() == numberOfTrainees)
                 .map(trainerCompleteResponseMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
