@@ -20,18 +20,18 @@ public class TrainerController {
 
     private final TrainerService trainerService;
 
-    @PutMapping("/add")
+    @PutMapping()
     public ResponseEntity<TrainerResponseDto> createTrainer(@RequestBody TrainerRequestDto trainerRequestDto) {
        return ResponseEntity.status(HttpStatus.OK)
                             .body(trainerService.createTrainer(trainerRequestDto));
     }
 
-    @GetMapping("/byId/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Trainer> getTrainerById(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(trainerService.getTrainerById(id));
     }
-    @GetMapping("/byUserName/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<TrainerCompleteResponseDto> getTrainerByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -47,7 +47,7 @@ public class TrainerController {
         return trainerService.activeTrainersWithNoTrainees();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteTrainer(@PathVariable int id){
         trainerService.deleteTrainer(id);
     }

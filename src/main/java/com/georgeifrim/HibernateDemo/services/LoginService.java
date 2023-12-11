@@ -9,6 +9,8 @@ import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @AllArgsConstructor
 public class LoginService {
@@ -21,23 +23,19 @@ public class LoginService {
 
     }
     public boolean userWithUsernameExist(String username){
-        if(userRepo.existsByUsername(username)){
-            return true;
-        }
-        else{
+        if(!userRepo.existsByUsername(username)){
             throw new UserWithUsernameNotExist(username);
         }
+        return true;
     }
     public boolean userPasswordMatch(String username, String password){
 
         String pass = userRepo.findByUsername(username).getPassword();
 
-        if(password.equals(pass)){
-            return true;
-        }
-        else{
+        if(!Objects.equals(password, pass)){
             throw new PasswordNotMatching(username);
         }
+        return true;
     }
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
         String username = changePasswordRequest.getUsername();
