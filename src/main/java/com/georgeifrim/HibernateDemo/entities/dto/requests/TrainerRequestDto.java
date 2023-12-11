@@ -1,10 +1,34 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
-import lombok.Data;
+public class TrainerRequestDto implements RequestDto {
 
-@Data
-public class TrainerRequestDto {
+    private String firstName;
+    private String lastName;
+    private String trainingTypeName;
 
-    private int training_type_id;
-    private int userId;
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getTrainingTypeName() {
+        return trainingTypeName;
+    }
+
+    public void setTrainingTypeName(String trainingTypeName) {
+        this.trainingTypeName = trainingTypeName;
+    }
 }

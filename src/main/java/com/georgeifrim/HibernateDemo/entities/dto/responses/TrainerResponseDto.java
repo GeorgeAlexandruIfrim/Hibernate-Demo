@@ -1,8 +1,9 @@
 package com.georgeifrim.HibernateDemo.entities.dto.responses;
 
-public record TraineeResponseDto (
-        String username,
+public record TrainerResponseDto(
+        String firstName,
         String password
-){
+) {
+
 
 }
