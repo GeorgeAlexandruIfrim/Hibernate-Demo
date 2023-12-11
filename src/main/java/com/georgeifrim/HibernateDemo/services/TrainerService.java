@@ -60,7 +60,7 @@ public class TrainerService {
     }
 
     public TrainerCompleteResponseDto getTrainerByUserName(String username) {
-        Trainer existingTrainer = trainerRepo.findByUserName(username)
+        Trainer existingTrainer = trainerRepo.findByUserUsername(username)
                 .orElseThrow(() -> new RuntimeException("Trainer with username " + username + " not found"));
         return trainerCompleteResponseMapper.toResponseDto(existingTrainer);
     }
@@ -76,7 +76,7 @@ public class TrainerService {
     public TrainerCompleteResponseDto updateTrainer(TrainerRequestDto trainerRequestDto) {
         TrainingType trainingType = trainingTypeRepo.findByName(trainerRequestDto.getTrainingTypeName());
         String username = trainerRequestDto.getUsername();
-        Trainer toBeUpdated = trainerRepo.findByUserName(username)
+        Trainer toBeUpdated = trainerRepo.findByUserUsername(username)
                 .orElseThrow(() -> new TrainerWithUsernameNotFound(username));
         toBeUpdated.setTrainingType(trainingType);
         var trainerSaved = trainerRepo.save(toBeUpdated);
