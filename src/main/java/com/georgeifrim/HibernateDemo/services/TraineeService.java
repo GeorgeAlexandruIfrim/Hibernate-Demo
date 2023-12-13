@@ -47,15 +47,9 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
 
     }
 
-    @Override
-    public Trainee getById(Integer id) {
-        return traineeRepo.findTraineeById(id)
-                .orElseThrow(() -> new TraineeWithIdNotFound(id));
-    }
-
     public TraineeCompleteResponseDto getByUserName(String username) {
 
-         Trainee trainee = traineeRepo.findTraineeByUserName(username)
+         Trainee trainee = traineeRepo.findByUserUsername(username)
                  .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
          return  traineeCompleteResponseMapper.toResponseDto(trainee);
     }
@@ -65,7 +59,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
         String username = traineeRequestDto.getUsername();
 
         Trainee traineeToBeUpdated = traineeRepo
-                .findTraineeByUserName(username)
+                .findByUserUsername(username)
                 .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
 
         traineeToBeUpdated.setAddress(traineeRequestDto.getAddress());
@@ -80,7 +74,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     @Transactional
     public Trainee updateActive(String username, boolean status) {
         Trainee traineeToBeUpdated = traineeRepo
-                .findTraineeByUserName(username)
+                .findByUserUsername(username)
                 .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
 
         traineeToBeUpdated.getUser().setActive(status);
@@ -90,7 +84,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     }
     @Override
     public void delete(String username) {
-        Trainee trainee = traineeRepo.findTraineeByUserName(username)
+        Trainee trainee = traineeRepo.findByUserUsername(username)
                 .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
         traineeRepo.delete(trainee);
         log.info("Trainee " + username + " was deleted");
@@ -108,12 +102,12 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     }
 
     public boolean traineeWithUsernameExists(String username) {
-        return traineeRepo.existsByUserName(username);
+        return traineeRepo.existsByUserUsername(username);
     }
 
     @Transactional
     public void enrollInTraining(String username, int trainingId) {
-        Trainee trainee = traineeRepo.findTraineeByUserName(username)
+        Trainee trainee = traineeRepo.findByUserUsername(username)
                 .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
         trainee.getTrainings()
                 .add(trainingRepo.findById(trainingId)

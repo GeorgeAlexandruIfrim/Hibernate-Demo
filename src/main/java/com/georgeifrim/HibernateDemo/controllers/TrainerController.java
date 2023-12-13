@@ -20,18 +20,13 @@ public class TrainerController {
 
     private final TrainerService trainerService;
 
-    @PutMapping("/add")
+    @PutMapping()
     public ResponseEntity<TrainerResponseDto> createTrainer(@RequestBody TrainerRequestDto trainerRequestDto) {
        return ResponseEntity.status(HttpStatus.OK)
                             .body(trainerService.createTrainer(trainerRequestDto));
     }
 
-    @GetMapping("/byId/{id}")
-    public ResponseEntity<Trainer> getTrainerById(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(trainerService.getTrainerById(id));
-    }
-    @GetMapping("/byUserName/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<TrainerCompleteResponseDto> getTrainerByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -42,12 +37,15 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(trainerService.updateTrainer(trainerRequestDto));
     }
-    @GetMapping("/activeTrainersWithNoTrainees")
-    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees(){
-        return trainerService.activeTrainersWithNoTrainees();
+    @GetMapping("/search")
+    public List<TrainerCompleteResponseDto> activeOrNotWithCertainNumberOfTrainees(
+            @RequestParam(required = false, defaultValue = "0") int numberOfTrainees,
+            @RequestParam(required = false, defaultValue = "true") boolean activeStatus
+    ){
+        return trainerService.activeTrainersWithNoTrainees(numberOfTrainees, activeStatus);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteTrainer(@PathVariable int id){
         trainerService.deleteTrainer(id);
     }

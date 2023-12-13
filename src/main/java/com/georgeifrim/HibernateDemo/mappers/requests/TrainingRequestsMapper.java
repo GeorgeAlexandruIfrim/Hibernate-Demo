@@ -38,8 +38,4 @@ public class TrainingRequestsMapper implements RequestsMapper<Training, Training
             return training;
         }
 
-    @Override
-    public TrainingRequestDto toRequestDto(Training training) {
-        return null;
-    }
 }

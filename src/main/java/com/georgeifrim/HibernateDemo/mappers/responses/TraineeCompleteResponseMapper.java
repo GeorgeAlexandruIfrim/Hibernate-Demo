@@ -18,10 +18,6 @@ public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, Tr
 
     @Autowired
     private TraineeResponseMapper traineeResponseMapper;
-    @Override
-    public Trainee toEntity(TraineeCompleteResponseDto traineeCompleteResponseDto) {
-        return null;
-    }
 
     @Override
     public TraineeCompleteResponseDto toResponseDto(Trainee trainee) {

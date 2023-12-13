@@ -29,9 +29,4 @@ public class TrainerRequestsMapper implements RequestsMapper<Trainer, TrainerReq
                 .build();
     }
 
-    @Override
-    public TrainerRequestDto toRequestDto(Trainer trainer){
-        return null;
-    }
-
 }

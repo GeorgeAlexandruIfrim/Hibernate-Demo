@@ -17,33 +17,26 @@ public class TraineeController {
 
     private final TraineeService traineeService;
 
-    @GetMapping("/byId/{id}")
-    public Trainee getTraineeById(@PathVariable Integer id){
-        return traineeService.getById(id);
-    }
-
-
-
-    @GetMapping("/byUserName/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<TraineeCompleteResponseDto> getTraineeByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(traineeService.getByUserName(username));
     }
 
-    @GetMapping("/listOfTrainings/{traineeId}")
+    @GetMapping("/{traineeId}/trainings")
     public ResponseEntity<?> getListOfTrainings(@PathVariable int traineeId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(traineeService.getListOfTrainings(traineeId));
     }
 
-    @PutMapping("/add")
+    @PutMapping()
     public ResponseEntity<TraineeResponseDto> addTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(traineeService.create(traineeRequestDto));
     }
 
-    @PostMapping("/update")
+    @PostMapping()
     public ResponseEntity<TraineeCompleteResponseDto> updateTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(traineeService.update(traineeRequestDto));
@@ -67,7 +60,7 @@ public class TraineeController {
         traineeService.enrollInTraining(username, trainingId);
     }
 
-    @DeleteMapping("/delete/{username}")
+    @DeleteMapping("/{username}")
     public void deleteTrainee(@PathVariable String username){
         traineeService.delete(username);
     }

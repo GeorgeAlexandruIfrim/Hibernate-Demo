@@ -49,26 +49,21 @@ public class TrainerService {
         return trainerResponseMapper.toResponseDto(trainer);
     }
 
-    public Trainer getTrainerById(int id) {
-        return trainerRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trainer not found with id " + id));
-    }
-
     public void deleteTrainer(int id) {
         trainerRepo.deleteById(id);
         log.info("Trainer with id " + id + " was deleted");
     }
 
     public TrainerCompleteResponseDto getTrainerByUserName(String username) {
-        Trainer existingTrainer = trainerRepo.findByUserName(username)
+        Trainer existingTrainer = trainerRepo.findByUserUsername(username)
                 .orElseThrow(() -> new RuntimeException("Trainer with username " + username + " not found"));
         return trainerCompleteResponseMapper.toResponseDto(existingTrainer);
     }
 
-    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees() {
-        return trainerRepo.findAllByUserIsActive(true)
+    public List<TrainerCompleteResponseDto> activeTrainersWithNoTrainees(int numberOfTrainees, boolean activeStatus) {
+        return trainerRepo.findAllByUserIsActive(activeStatus)
                 .stream()
-                .filter(trainer -> trainer.getTrainees().isEmpty())
+                .filter(trainer -> trainer.getTrainees().size() == numberOfTrainees)
                 .map(trainerCompleteResponseMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
@@ -76,7 +71,7 @@ public class TrainerService {
     public TrainerCompleteResponseDto updateTrainer(TrainerRequestDto trainerRequestDto) {
         TrainingType trainingType = trainingTypeRepo.findByName(trainerRequestDto.getTrainingTypeName());
         String username = trainerRequestDto.getUsername();
-        Trainer toBeUpdated = trainerRepo.findByUserName(username)
+        Trainer toBeUpdated = trainerRepo.findByUserUsername(username)
                 .orElseThrow(() -> new TrainerWithUsernameNotFound(username));
         toBeUpdated.setTrainingType(trainingType);
         var trainerSaved = trainerRepo.save(toBeUpdated);

@@ -26,14 +26,4 @@ public class TraineeRequestsMapper implements RequestsMapper<Trainee, TraineeReq
                 .user(userRepo.save(userToBeCreated))
                 .build();
     }
-
-    @Override
-    public TraineeRequestDto toRequestDto(Trainee trainee) {
-        return null;
-    }
-
-    private User getUserbyId(int id){
-        return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
 }

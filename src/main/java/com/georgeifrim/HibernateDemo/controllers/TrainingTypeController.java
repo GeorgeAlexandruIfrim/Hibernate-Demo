@@ -15,7 +15,7 @@ public class TrainingTypeController {
 
     private final TrainingTypeRepo trainingTypeRepo;
 
-    @GetMapping("/byName")
+    @GetMapping()
     public TrainingType byName(@RequestParam String name){
 
         return trainingTypeRepo.findByName(name);

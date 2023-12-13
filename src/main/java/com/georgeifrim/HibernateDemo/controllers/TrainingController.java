@@ -15,13 +15,13 @@ public class TrainingController {
 
     private final TrainingService trainingService;
 
-    @PutMapping("/add")
+    @PutMapping()
     public ResponseEntity<Training> createTraining(@RequestBody TrainingRequestDto trainingRequestDto) {
        return ResponseEntity.status(HttpStatus.OK)
                             .body(trainingService.createTraining(trainingRequestDto));
     }
 
-    @GetMapping("byId/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Training> getTrainingById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(trainingService.getTrainingById(id));
