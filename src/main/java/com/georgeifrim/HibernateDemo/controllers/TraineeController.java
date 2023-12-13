@@ -17,13 +17,6 @@ public class TraineeController {
 
     private final TraineeService traineeService;
 
-    @GetMapping("/{id}")
-    public Trainee getTraineeById(@PathVariable Integer id){
-        return traineeService.getById(id);
-    }
-
-
-
     @GetMapping("/{username}")
     public ResponseEntity<TraineeCompleteResponseDto> getTraineeByUserName(@PathVariable String username){
 

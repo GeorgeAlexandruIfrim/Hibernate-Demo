@@ -26,11 +26,6 @@ public class TrainerController {
                             .body(trainerService.createTrainer(trainerRequestDto));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Trainer> getTrainerById(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(trainerService.getTrainerById(id));
-    }
     @GetMapping("/{username}")
     public ResponseEntity<TrainerCompleteResponseDto> getTrainerByUserName(@PathVariable String username){
 

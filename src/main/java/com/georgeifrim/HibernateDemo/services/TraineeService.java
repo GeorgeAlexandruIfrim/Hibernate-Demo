@@ -47,12 +47,6 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
 
     }
 
-    @Override
-    public Trainee getById(Integer id) {
-        return traineeRepo.findById(id)
-                .orElseThrow(() -> new TraineeWithIdNotFound(id));
-    }
-
     public TraineeCompleteResponseDto getByUserName(String username) {
 
          Trainee trainee = traineeRepo.findByUserUsername(username)

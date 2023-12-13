@@ -49,11 +49,6 @@ public class TrainerService {
         return trainerResponseMapper.toResponseDto(trainer);
     }
 
-    public Trainer getTrainerById(int id) {
-        return trainerRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trainer not found with id " + id));
-    }
-
     public void deleteTrainer(int id) {
         trainerRepo.deleteById(id);
         log.info("Trainer with id " + id + " was deleted");
