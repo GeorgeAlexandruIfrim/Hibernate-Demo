@@ -37,7 +37,7 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(trainerService.updateTrainer(trainerRequestDto));
     }
-    @GetMapping()
+    @GetMapping("/search")
     public List<TrainerCompleteResponseDto> activeOrNotWithCertainNumberOfTrainees(
             @RequestParam(required = false, defaultValue = "0") int numberOfTrainees,
             @RequestParam(required = false, defaultValue = "true") boolean activeStatus

@@ -24,7 +24,7 @@ public class TraineeController {
                 .body(traineeService.getByUserName(username));
     }
 
-    @GetMapping("/trainings/{traineeId}")
+    @GetMapping("/{traineeId}/trainings")
     public ResponseEntity<?> getListOfTrainings(@PathVariable int traineeId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(traineeService.getListOfTrainings(traineeId));
