@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserSecurityRepo extends JpaRepository<UserSecurity, Integer> {
 
     Optional<UserSecurity> findByUsername(String username);
+
 }

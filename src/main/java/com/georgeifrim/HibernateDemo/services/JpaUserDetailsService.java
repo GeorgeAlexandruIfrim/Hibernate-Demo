@@ -1,7 +1,6 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.repositories.UserSecurityRepo;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
