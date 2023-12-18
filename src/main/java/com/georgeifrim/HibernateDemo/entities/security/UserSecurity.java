@@ -22,10 +22,6 @@ public class UserSecurity implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authorities",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id")
-    )
     private Set<Authority> authorities;
 
     @Override
