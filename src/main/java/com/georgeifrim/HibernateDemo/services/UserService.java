@@ -6,6 +6,7 @@ import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepo userRepo;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(User user) {
@@ -55,7 +58,7 @@ public class UserService {
     public void changePass(String username, String newPassword) {
         var user =userRepo.findByUsername(username)
                 .orElseThrow(() -> new UserWithUsernameNotExist(username));
-        var hashedPass = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+        var hashedPass = passwordEncoder.encode(newPassword);
         user.setPassword(hashedPass);
         userRepo.save(user);
     }
