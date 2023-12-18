@@ -33,4 +33,10 @@ public class UserController {
 
         return userService.updateUser(id, user);
     }
+
+    @PostMapping("/changePassword/{username}")
+    public void changePass(@PathVariable String username,
+                           @RequestParam String newPassword){
+        userService.changePass(username, newPassword);
+    }
 }

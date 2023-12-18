@@ -1,9 +1,11 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.User;
+import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameNotExist;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +50,13 @@ public class UserService {
     }
     public boolean userWithUsernameExists(String username){
           return userRepo.existsByUsername(username);
+    }
+
+    public void changePass(String username, String newPassword) {
+        var user =userRepo.findByUsername(username)
+                .orElseThrow(() -> new UserWithUsernameNotExist(username));
+        var hashedPass = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+        user.setPassword(hashedPass);
+        userRepo.save(user);
     }
 }

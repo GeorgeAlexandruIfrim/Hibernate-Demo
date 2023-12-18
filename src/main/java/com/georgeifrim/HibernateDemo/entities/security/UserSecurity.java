@@ -1,32 +1,35 @@
 package com.georgeifrim.HibernateDemo.entities.security;
 
+import com.georgeifrim.HibernateDemo.entities.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
 
-@Entity
 @Data
-@Table(name = "users")
+@AllArgsConstructor
 public class UserSecurity implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String username;
-
-    private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     @Override
@@ -48,5 +51,4 @@ public class UserSecurity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
