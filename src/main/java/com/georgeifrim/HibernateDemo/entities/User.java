@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -27,6 +28,7 @@ public class User {
     private String username;
     private String password;
     private boolean isActive;
+    private Instant blockedUntil;
 
     @CreatedDate
     @Temporal(TemporalType.DATE)
