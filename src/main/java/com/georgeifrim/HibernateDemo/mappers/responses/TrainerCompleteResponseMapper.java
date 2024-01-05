@@ -1,6 +1,7 @@
 package com.georgeifrim.HibernateDemo.mappers.responses;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
+import com.georgeifrim.HibernateDemo.entities.Training;
 import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
@@ -22,6 +23,7 @@ public class TrainerCompleteResponseMapper implements ResponseMapper<Trainer, Tr
         String first_name = user.getFirstName();
         String last_name = user.getLastName();
         String trainingTypeName = trainer.getTrainingType().getName();
+        List<Training> trainings = trainer.getTrainings();
         List<TraineeResponseDto> traineeList = trainer.getTrainees()
                 .stream()
                 .map(trainee -> traineeResponseMapper.toResponseDto(trainee))
@@ -32,6 +34,7 @@ public class TrainerCompleteResponseMapper implements ResponseMapper<Trainer, Tr
                 first_name,
                 last_name,
                 trainingTypeName,
+                trainings,
                 traineeList
         );
     }

@@ -16,16 +16,18 @@ import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class TrainerService {
 
     private final TrainerRepo trainerRepo;
+
     private final UserService userService;
 
     private final TrainingTypeRepo trainingTypeRepo;
@@ -34,7 +36,6 @@ public class TrainerService {
 
     private final RequestsMapper<Trainer, TrainerRequestDto> trainerRequestsMapper;
     private final ResponseMapper<Trainer, TrainerResponseDto> trainerResponseMapper;
-
 
     public TrainerResponseDto createTrainer(TrainerRequestDto trainerRequestDto) {
         String username = trainerRequestDto.getUsername();
