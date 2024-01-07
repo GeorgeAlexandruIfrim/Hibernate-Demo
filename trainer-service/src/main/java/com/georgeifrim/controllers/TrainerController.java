@@ -2,6 +2,7 @@ package com.georgeifrim.controllers;
 
 import com.georgeifrim.entities.TrainerCompleteResponseDto;
 import com.georgeifrim.entities.requests.Training;
+import com.georgeifrim.mappers.TrainerMapper;
 import com.georgeifrim.services.TrainerServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,17 @@ public class TrainerController {
 
     private final TrainerServices trainerServices;
 
+    @PutMapping("/{username}")
+    public ResponseEntity<TrainerCompleteResponseDto> addTraining(@PathVariable String username,
+                                                                  @RequestBody Training training){
+
+    return trainerServices.addTraining(username, training);
+
+    }
+
     @GetMapping("/{username}")
-    public ResponseEntity<TrainerCompleteResponseDto> addTraining(@PathVariable String username){
-
-    return trainerServices.addTraining(username);
-
+    public ResponseEntity<TrainerMapper> trainer(@PathVariable String username){
+        return trainerServices.trainer(username);
     }
 
 }
