@@ -26,4 +26,6 @@ public class TrainingController {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(trainingService.getTrainingById(id));
     }
+
+
 }
