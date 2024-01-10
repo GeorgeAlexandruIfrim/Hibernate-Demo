@@ -27,7 +27,7 @@ public class Trainee {
 
     private String address;
 
-    @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainee")
     @JsonManagedReference
     private List<Training> trainings;
 
