@@ -30,9 +30,10 @@ public class TrainerController {
         return trainerServices.trainer(username);
     }
 
-    @PatchMapping("/{message}")
-    public void sendMessage(@PathVariable String message){
-//        sender.send("order-queue", "primul mesaj !!");
+    @PatchMapping
+    public void sendMessage(@RequestBody Training training){
+        sender.sendTraining(training);
     }
 
 }
+

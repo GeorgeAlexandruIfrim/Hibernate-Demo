@@ -14,4 +14,12 @@ public class TrainingRequestDto {
     private int trainer_id;
     private int training_type_id;
 
+    public TrainingRequestDto (TrainingRequestWithHttpMethod training){
+        this.date = training.getDate();
+        this.durationMinutes = training.getDurationMinutes();
+        this.name = training.getName();
+        this.trainee_id = training.getTrainee_id();
+        this.trainer_id = training.getTrainer_id();
+        this.training_type_id = training.getTraining_type_id();
+    }
 }
