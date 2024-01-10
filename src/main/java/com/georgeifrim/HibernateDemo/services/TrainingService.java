@@ -31,4 +31,8 @@ public class TrainingService {
         return trainingRepo.findById(id)
                             .orElseThrow(() -> new TrainingWithIdNotFound(id));
     }
+
+    public void deleteTrainingById(Integer id){
+        trainingRepo.deleteById(id);
+    }
 }

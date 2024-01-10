@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class TrainingRequestDto {
 
     private LocalDate date;
-    private int duration_minutes;
+    private int durationMinutes;
     private String name;
     private int trainee_id;
     private int trainer_id;

@@ -2,6 +2,7 @@ package com.georgeifrim.controllers;
 
 import com.georgeifrim.entities.TrainerCompleteResponseDto;
 import com.georgeifrim.entities.requests.Training;
+import com.georgeifrim.jms.senders.Sender;
 import com.georgeifrim.mappers.TrainerMapper;
 import com.georgeifrim.services.TrainerServices;
 import lombok.AllArgsConstructor;
@@ -15,17 +16,23 @@ public class TrainerController {
 
     private final TrainerServices trainerServices;
 
+    private final Sender sender;
+
     @PutMapping("/{username}")
     public ResponseEntity<TrainerCompleteResponseDto> addTraining(@PathVariable String username,
                                                                   @RequestBody Training training){
-
-    return trainerServices.addTraining(username, training);
+    return trainerServices.addOrDeleteTrainingFromTrainer(username, training);
 
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<TrainerMapper> trainer(@PathVariable String username){
         return trainerServices.trainer(username);
+    }
+
+    @PatchMapping("/{message}")
+    public void sendMessage(@PathVariable String message){
+//        sender.send("order-queue", "primul mesaj !!");
     }
 
 }
