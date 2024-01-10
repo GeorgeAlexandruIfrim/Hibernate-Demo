@@ -17,6 +17,7 @@ import com.georgeifrim.HibernateDemo.mappers.responses.TrainerCompleteResponseMa
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,7 @@ public class TrainerService {
         log.info("Trainer " + username + " was updated!");
         return trainerCompleteResponseMapper.toResponseDto(trainerSaved);
     }
-
+    @Transactional
     public void deleteTrainingFromTrainer(TrainingRequestDto training, String username){
         Integer trainerId = training.getTrainer_id();
         String trainerUsername = trainerRepo.findById(trainerId).orElseThrow(() -> new TrainerWithIdNotFound(trainerId)).getUser().getUsername();
