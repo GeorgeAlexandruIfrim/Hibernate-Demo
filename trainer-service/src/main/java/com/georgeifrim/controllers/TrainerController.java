@@ -2,6 +2,7 @@ package com.georgeifrim.controllers;
 
 import com.georgeifrim.entities.TrainerCompleteResponseDto;
 import com.georgeifrim.entities.requests.Training;
+import com.georgeifrim.entities.requests.TrainingWithHttpMethod;
 import com.georgeifrim.jms.senders.Sender;
 import com.georgeifrim.mappers.TrainerMapper;
 import com.georgeifrim.services.TrainerServices;
@@ -31,7 +32,7 @@ public class TrainerController {
     }
 
     @PatchMapping
-    public void sendMessage(@RequestBody Training training){
+    public void sendMessage(@RequestBody TrainingWithHttpMethod training){
         sender.sendTraining(training);
     }
 

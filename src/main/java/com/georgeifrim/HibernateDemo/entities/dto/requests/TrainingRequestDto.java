@@ -1,5 +1,6 @@
 package com.georgeifrim.HibernateDemo.entities.dto.requests;
 
+import com.georgeifrim.entities.requests.TrainingWithHttpMethod;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ public class TrainingRequestDto {
     private int trainer_id;
     private int training_type_id;
 
-    public TrainingRequestDto (TrainingRequestWithHttpMethod training){
+    public TrainingRequestDto (TrainingWithHttpMethod training){
         this.date = training.getDate();
         this.durationMinutes = training.getDurationMinutes();
         this.name = training.getName();
