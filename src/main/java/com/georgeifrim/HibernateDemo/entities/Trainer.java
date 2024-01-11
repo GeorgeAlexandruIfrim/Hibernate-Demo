@@ -27,7 +27,7 @@ public class Trainer {
     private TrainingType trainingType;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trainer",fetch = FetchType.EAGER)
     private List<Training> trainings;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "trainers")

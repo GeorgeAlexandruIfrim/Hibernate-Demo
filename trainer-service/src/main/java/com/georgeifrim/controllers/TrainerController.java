@@ -2,6 +2,8 @@ package com.georgeifrim.controllers;
 
 import com.georgeifrim.entities.TrainerCompleteResponseDto;
 import com.georgeifrim.entities.requests.Training;
+import com.georgeifrim.entities.requests.TrainingWithHttpMethod;
+import com.georgeifrim.jms.senders.Sender;
 import com.georgeifrim.mappers.TrainerMapper;
 import com.georgeifrim.services.TrainerServices;
 import lombok.AllArgsConstructor;
@@ -15,11 +17,12 @@ public class TrainerController {
 
     private final TrainerServices trainerServices;
 
+    private final Sender sender;
+
     @PutMapping("/{username}")
     public ResponseEntity<TrainerCompleteResponseDto> addTraining(@PathVariable String username,
                                                                   @RequestBody Training training){
-
-    return trainerServices.addTraining(username, training);
+    return trainerServices.addOrDeleteTrainingFromTrainer(username, training);
 
     }
 
@@ -28,4 +31,10 @@ public class TrainerController {
         return trainerServices.trainer(username);
     }
 
+    @PatchMapping
+    public void sendMessage(@RequestBody TrainingWithHttpMethod training){
+        sender.sendTraining(training);
+    }
+
 }
+

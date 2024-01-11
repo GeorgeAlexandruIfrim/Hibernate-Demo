@@ -5,6 +5,7 @@ import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainingRequestDto;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
 import com.georgeifrim.HibernateDemo.mappers.requests.RequestsMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class TrainingService {
     public Training getTrainingById(Integer id) {
         return trainingRepo.findById(id)
                             .orElseThrow(() -> new TrainingWithIdNotFound(id));
+    }
+
+    @Transactional
+    public void deleteTrainingById(Integer id){
+        trainingRepo.deleteById(id);
     }
 }

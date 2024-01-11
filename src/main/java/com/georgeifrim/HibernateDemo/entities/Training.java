@@ -14,7 +14,7 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "trainee_id")
     @JsonBackReference
     private Trainee trainee;

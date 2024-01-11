@@ -1,10 +1,13 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.Trainer;
+import com.georgeifrim.HibernateDemo.entities.Training;
 import com.georgeifrim.HibernateDemo.entities.TrainingType;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainerRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TrainingRequestDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TrainerResponseDto;
+import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainingType.TrainingTypeDoesNotExist;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
@@ -12,7 +15,9 @@ import com.georgeifrim.HibernateDemo.mappers.requests.RequestsMapper;
 import com.georgeifrim.HibernateDemo.mappers.responses.ResponseMapper;
 import com.georgeifrim.HibernateDemo.mappers.responses.TrainerCompleteResponseMapper;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
+import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingTypeRepo;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,8 @@ import java.util.stream.Collectors;
 public class TrainerService {
 
     private final TrainerRepo trainerRepo;
+
+    private final TrainingRepo trainingRepo;
 
     private final UserService userService;
 
@@ -50,9 +57,10 @@ public class TrainerService {
         return trainerResponseMapper.toResponseDto(trainer);
     }
 
-    public void deleteTrainer(int id) {
-        trainerRepo.deleteById(id);
-        log.info("Trainer with id " + id + " was deleted");
+    public void deleteTrainer(String username) {
+        Trainer trainer = trainerRepo.findByUserUsername(username).orElseThrow(() -> new TrainerWithUsernameNotFound(username));
+        trainerRepo.deleteById(trainer.getId());
+        log.info("Trainer with username " + username +" was deleted");
     }
 
     public TrainerCompleteResponseDto getTrainerByUserName(String username) {
@@ -78,5 +86,15 @@ public class TrainerService {
         var trainerSaved = trainerRepo.save(toBeUpdated);
         log.info("Trainer " + username + " was updated!");
         return trainerCompleteResponseMapper.toResponseDto(trainerSaved);
+    }
+    @Transactional
+    public void deleteTrainingFromTrainer(TrainingRequestDto training, String username){
+        Integer trainerId = training.getTrainer_id();
+        String trainerUsername = trainerRepo.findById(trainerId).orElseThrow(() -> new TrainerWithIdNotFound(trainerId)).getUser().getUsername();
+        if(!username.equals(trainerUsername)){
+            throw new RuntimeException("The training doesn't belong to the trainer with username " + username);
+        }else{
+            trainingRepo.deleteTrainingByName(training.getName());
+        }
     }
 }

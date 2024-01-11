@@ -27,5 +27,10 @@ public class TrainingController {
                              .body(trainingService.getTrainingById(id));
     }
 
+    @DeleteMapping
+    public void deleteById(@RequestParam Integer id){
+        trainingService.deleteTrainingById(id);
+    }
+
 
 }

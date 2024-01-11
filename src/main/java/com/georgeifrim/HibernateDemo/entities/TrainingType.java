@@ -21,7 +21,7 @@ public class TrainingType {
     private List<Trainer> trainers;
 
 
-    @OneToMany(mappedBy = "trainingType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainingType")
     @JsonManagedReference
     private List<Training> trainings;
 
