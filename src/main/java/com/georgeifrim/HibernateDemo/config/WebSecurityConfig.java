@@ -36,7 +36,7 @@ import java.util.*;
 public class WebSecurityConfig {
 
     private final JpaUserDetailsService userDetails;
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
     private final Map<String, Integer> loginAttempts = new HashMap<>();
 
     private static final String AUTH_HEADER_NAME = "Authorization";

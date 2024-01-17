@@ -45,8 +45,7 @@ public class Trainee {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Trainee)) return false;
-        Trainee trainee = (Trainee) o;
+        if (!(o instanceof Trainee trainee)) return false;
         return getDate_of_birth().equals(trainee.getDate_of_birth()) && getAddress().equals(trainee.getAddress());
     }
 
