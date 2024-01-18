@@ -1,9 +1,7 @@
 package com.georgeifrim.entities;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 
+import lombok.Data;
 import java.time.Instant;
 import java.time.LocalDate;
 

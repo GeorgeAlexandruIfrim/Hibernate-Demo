@@ -5,6 +5,7 @@ import com.georgeifrim.entities.requests.Training;
 import com.georgeifrim.entities.requests.TrainingWithHttpMethod;
 import com.georgeifrim.jms.senders.Sender;
 import com.georgeifrim.mappers.TrainerMapper;
+import com.georgeifrim.mongoServices.TrainerService;
 import com.georgeifrim.services.TrainerServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class TrainerController {
 
     private final TrainerServices trainerServices;
+
+    private final TrainerService mongoTrainerServices;
 
     private final Sender sender;
 
@@ -36,5 +39,9 @@ public class TrainerController {
         sender.sendTraining(training);
     }
 
+    @GetMapping
+    public TrainerMapper trainerFromMongo(@RequestParam String firstName){
+        return mongoTrainerServices.trainerFromMongo(firstName);
+    }
 }
 
