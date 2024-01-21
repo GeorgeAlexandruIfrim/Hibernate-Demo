@@ -5,7 +5,6 @@ import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameNotExist;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,7 @@ public class UserService {
 
     @Transactional
     public User createUser(User user) {
-        User user1 = new User(user.getFirstName(), user.getLastName(), user.isActive());
+        User user1 = new User(user.getFirstName(), user.getLastName(), user.getActive());
         if(userWithUsernameExists(user1.getUsername())) {
             throw new RuntimeException("User already exists");
         }
@@ -38,7 +37,7 @@ public class UserService {
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setUsername(user.getFirstName() + "." + user.getLastName());
-        existingUser.setActive(user.isActive());
+        existingUser.setActive(user.getActive());
         return userRepo.save(existingUser);
     }
 

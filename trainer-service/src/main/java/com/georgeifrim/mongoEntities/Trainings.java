@@ -1,12 +1,10 @@
 package com.georgeifrim.mongoEntities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 public class Trainings {
 
     private LocalDate date;

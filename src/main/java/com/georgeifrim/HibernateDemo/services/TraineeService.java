@@ -10,11 +10,12 @@ import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotF
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.training.TrainingWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameAlreadyExists;
+import com.georgeifrim.HibernateDemo.mappers.requests.TraineeRequestsMapper;
 import com.georgeifrim.HibernateDemo.mappers.responses.TraineeCompleteResponseMapper;
+import com.georgeifrim.HibernateDemo.mappers.responses.TraineeResponseMapper;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainerRepo;
 import com.georgeifrim.HibernateDemo.repositories.TrainingRepo;
-import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,21 +31,24 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     private final TraineeRepo traineeRepo;
     private final TrainerRepo trainerRepo;
     private final UserService userService;
-    private final UserRepo userRepo;
     private final TrainingRepo trainingRepo;
+    private final TraineeRequestsMapper requestsMapper;
+    private final TraineeResponseMapper responseMapper;
 
     private final TraineeCompleteResponseMapper traineeCompleteResponseMapper;
     @Transactional
     @Override
     public TraineeResponseDto create(TraineeRequestDto traineeRequestDto) {
         String username = traineeRequestDto.getUsername();
-        if(userService.userWithUsernameExists(username))
+
+        if(userService.userWithUsernameExists(username)){
             throw new UserWithUsernameAlreadyExists(username);
+        }
 
-        var traineeSaved = requestsMapper.toEntity(traineeRequestDto);
-        traineeRepo.save(traineeSaved);
-        return responseMapper.toResponseDto(traineeSaved);
+        Trainee traineeSaved = requestsMapper.toEntity(traineeRequestDto);
+        Trainee traineeSaved1 = traineeRepo.save(traineeSaved);
 
+        return responseMapper.toResponseDto(traineeSaved1);
     }
 
     public TraineeCompleteResponseDto getByUserName(String username) {
@@ -99,10 +103,6 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
                                 .orElseThrow(() -> new TrainerWithIdNotFound(trainerId)));
         log.info("Trainer with id " + trainerId + " was enrolled to trainee with id " + traineeId);
         traineeRepo.save(trainee);
-    }
-
-    public boolean traineeWithUsernameExists(String username) {
-        return traineeRepo.existsByUserUsername(username);
     }
 
     @Transactional
