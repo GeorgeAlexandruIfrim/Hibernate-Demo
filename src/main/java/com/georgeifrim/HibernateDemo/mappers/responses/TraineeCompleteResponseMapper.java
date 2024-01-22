@@ -32,7 +32,7 @@ public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, Tr
                 user.getLastName(),
                 trainee.getDate_of_birth(),
                 trainee.getAddress(),
-                user.isActive(),
+                user.getActive(),
                 trainerResponseList
                 );
 

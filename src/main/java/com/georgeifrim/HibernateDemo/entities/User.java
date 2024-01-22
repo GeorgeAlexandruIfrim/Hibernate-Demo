@@ -16,8 +16,8 @@ import java.util.Random;
 @EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     
     @Id
@@ -42,6 +42,9 @@ public class User {
         this.isActive = isActive;
     }
 
+    public boolean getActive(){
+        return isActive;
+    }
     private String passwordGenerator() {
             final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             int passwordLength = 10;

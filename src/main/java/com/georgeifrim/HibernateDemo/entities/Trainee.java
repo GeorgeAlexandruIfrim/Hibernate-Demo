@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -42,15 +41,4 @@ public class Trainee {
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Trainee trainee)) return false;
-        return getDate_of_birth().equals(trainee.getDate_of_birth()) && getAddress().equals(trainee.getAddress());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDate_of_birth(), getAddress());
-    }
 }
