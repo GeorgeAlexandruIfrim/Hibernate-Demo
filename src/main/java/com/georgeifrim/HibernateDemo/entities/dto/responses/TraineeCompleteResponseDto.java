@@ -1,5 +1,6 @@
 package com.georgeifrim.HibernateDemo.entities.dto.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class TraineeCompleteResponseDto{
     LocalDate dateOfBirth;
     String address;
     boolean isActive;
+    @JsonIgnoreProperties("traineeList")
     List<TrainerCompleteResponseDto> trainerList;
 }

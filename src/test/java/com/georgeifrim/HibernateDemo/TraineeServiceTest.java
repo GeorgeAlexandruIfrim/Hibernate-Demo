@@ -155,8 +155,4 @@ public class TraineeServiceTest {
         assertTrue(trainers.contains(trainer));
     }
 
-
-
-
-
 }

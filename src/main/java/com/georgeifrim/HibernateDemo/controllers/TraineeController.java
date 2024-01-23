@@ -17,7 +17,7 @@ public class TraineeController {
 
     private final TraineeService traineeService;
 
-    @GetMapping("/{username}")
+    @GetMapping(value = "/{username}")
     public ResponseEntity<TraineeCompleteResponseDto> getTraineeByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
