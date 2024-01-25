@@ -185,7 +185,6 @@ public class TraineeControllerIntegrationTest {
     public void updateIsActiveforExistingTrainee() throws Exception{
 
         when(traineeRepo.findByUserUsername(USERNAME)).thenReturn(Optional.of(trainee));
-        when(traineeRepo.save(trainee)).thenReturn(trainee);
         when(trainee.getUser()).thenReturn(user);
 
         mockMvc.perform(post("/trainees/updateStatus")
