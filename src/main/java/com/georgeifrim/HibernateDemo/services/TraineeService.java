@@ -34,8 +34,8 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
     private final TrainingRepo trainingRepo;
     private final TraineeRequestsMapper requestsMapper;
     private final TraineeResponseMapper responseMapper;
-
     private final TraineeCompleteResponseMapper traineeCompleteResponseMapper;
+
     @Transactional
     @Override
     public TraineeResponseDto create(TraineeRequestDto traineeRequestDto) {
@@ -55,7 +55,7 @@ public class TraineeService extends EntityService<Trainee, TraineeRequestDto, Tr
 
          Trainee trainee = traineeRepo.findByUserUsername(username)
                  .orElseThrow(() -> new TraineeWithUsernameNotFound(username));
-         return  traineeCompleteResponseMapper.toResponseDto(trainee);
+         return traineeCompleteResponseMapper.toResponseDto(trainee);
     }
 
     @Transactional

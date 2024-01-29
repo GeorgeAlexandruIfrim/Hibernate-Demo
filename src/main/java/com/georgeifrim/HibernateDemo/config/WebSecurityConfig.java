@@ -4,11 +4,8 @@ import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameNotExist;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import com.georgeifrim.HibernateDemo.services.JpaUserDetailsService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +17,17 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class WebSecurityConfig {
@@ -56,6 +53,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.httpBasic(Customizer.withDefaults())
                     .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.GET).authenticated()
+                            .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers(HttpMethod.POST).authenticated()
                             .requestMatchers(HttpMethod.DELETE).authenticated()
                             .anyRequest().permitAll())

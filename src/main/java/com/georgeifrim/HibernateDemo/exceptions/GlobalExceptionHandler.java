@@ -1,6 +1,7 @@
 package com.georgeifrim.HibernateDemo.exceptions;
 
 import com.georgeifrim.HibernateDemo.exceptions.login.PasswordNotMatching;
+import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithIdNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainees.TraineeWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainer.TrainerWithUsernameNotFound;
 import com.georgeifrim.HibernateDemo.exceptions.trainingType.TrainingTypeDoesNotExist;
@@ -15,6 +16,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({TraineeWithUsernameNotFound.class})
     public ResponseEntity<ErrorMessage> handleUsernameNotFound(Exception e){
+        ErrorMessage err = new ErrorMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler({TraineeWithIdNotFound.class})
+    public ResponseEntity<ErrorMessage> handleTraineeWithNonExistingId(Exception e){
         ErrorMessage err = new ErrorMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
