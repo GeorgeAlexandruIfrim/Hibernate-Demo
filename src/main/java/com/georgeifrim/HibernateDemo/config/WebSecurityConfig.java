@@ -53,6 +53,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.httpBasic(Customizer.withDefaults())
                     .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.GET).authenticated()
+                            .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers(HttpMethod.POST).authenticated()
                             .requestMatchers(HttpMethod.DELETE).authenticated()
                             .anyRequest().permitAll())

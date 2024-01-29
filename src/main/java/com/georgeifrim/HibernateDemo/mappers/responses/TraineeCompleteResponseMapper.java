@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.Function;
 
 @Service
-
 public class TraineeCompleteResponseMapper implements ResponseMapper<Trainee, TraineeCompleteResponseDto>{
 
     @Autowired

@@ -1,35 +1,29 @@
 package com.georgeifrim.HibernateDemo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.georgeifrim.HibernateDemo.entities.Trainee;
 import com.georgeifrim.HibernateDemo.entities.User;
 import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
 import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
-import com.georgeifrim.HibernateDemo.mappers.requests.TraineeRequestsMapper;
 import com.georgeifrim.HibernateDemo.mappers.responses.TraineeCompleteResponseMapper;
-import com.georgeifrim.HibernateDemo.mappers.responses.TraineeResponseMapper;
 import com.georgeifrim.HibernateDemo.repositories.TraineeRepo;
-import com.georgeifrim.HibernateDemo.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Optional;
-import java.util.Random;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -38,32 +32,18 @@ public class TraineeControllerIntegrationTest {
     private static final String AUTH_HEADER_NAME = "Authorization";
     private static final String AUTH_TYPE = "Basic ";
     private static final String SEPARATOR = ":";
-    private static final String SecurityUsername = "Andrei.Lupulescu";
-    private static final String password = "Andrei.Lupulescu";
+    private static final String SecurityUsername = "Kimi.Nigel";
+    private static final String password = "Kimi.Nigel";
     private static final String credentials = SecurityUsername + SEPARATOR + password;
     private static final String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
-    private final static String USERNAME = "firstName.lastName";
-    private final static int RANDOM_ID = new Random().nextInt();
+    private final static String USERNAME = "Andrei.Lupulescu";
+    private final static int RANDOM_ID = 18;
 
-    @MockBean
-    private Trainee trainee;
 
-    @MockBean
+    @Autowired
     private TraineeRepo traineeRepo;
 
-    @MockBean
-    private TraineeRequestsMapper requestsMapper;
-
-    @MockBean
-    private TraineeResponseDto traineeResponseDto;
-
-    @MockBean
-    private TraineeResponseMapper responseMapper;
-
-    @MockBean
-    private UserService userService;
-
-    @MockBean
+    @Autowired
     private TraineeCompleteResponseMapper traineeCompleteResponseMapper;
 
     @Autowired
@@ -79,46 +59,41 @@ public class TraineeControllerIntegrationTest {
     public void setUp(){
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add(AUTH_HEADER_NAME, AUTH_TYPE + encodedCredentials);
-
-        traineeRequestDto.setFirstName("firstName");
-        traineeRequestDto.setLastName("lastName");
-
-        this.traineeCompleteResponseDto = new TraineeCompleteResponseDto(null,null,null,null, true, null);
     }
     @Test
     public void traineeByUsername() throws Exception {
 
-        when(traineeRepo.findByUserUsername(anyString())).thenReturn(Optional.of(trainee));
-
         mockMvc.perform(get("/trainees/" + USERNAME)
                         .headers(headers))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lastName").value("Lupulescu"))
+                .andExpect(jsonPath("$.firstName").value("Andrei"))
+                .andExpect(jsonPath("$.dateOfBirth").value("1949-08-22"));
     }
 
     @Test
     public void traineeByUsernameWithNonExistingUser() throws Exception {
 
-        when(traineeRepo.findByUserUsername(anyString())).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/trainees/" + USERNAME)
+        mockMvc.perform(get("/trainees/" + USERNAME +"nonExistingUser")
                         .headers(headers))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void listOfTrainingsByTraineeId() throws Exception {
-        when(traineeRepo.findById(anyInt())).thenReturn(Optional.of(trainee));
 
         mockMvc.perform(get("/trainees/" + RANDOM_ID + "/trainings")
                         .headers(headers))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name").value("December Killer"))
+                .andExpect(jsonPath("$.[0].date").value("2023-12-23"))
+                .andExpect(jsonPath("$.[0].durationMinutes").value(35));
     }
 
     @Test
     public void listOfTrainingsByNonExistingTraineeById() throws Exception {
-        when(traineeRepo.findById(anyInt())).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/trainees/" + RANDOM_ID + "/trainings")
+        mockMvc.perform(get("/trainees/" + Integer.MAX_VALUE + "/trainings")
                         .headers(headers))
                 .andExpect(status().isNotFound());
     }
@@ -126,25 +101,34 @@ public class TraineeControllerIntegrationTest {
     @Test
     public void addNewTrainee() throws Exception{
 
-        when(userService.userWithUsernameExists(USERNAME)).thenReturn(false);
-        when(requestsMapper.toEntity(traineeRequestDto)).thenReturn(trainee);
-        when(traineeRepo.save(trainee)).thenReturn(trainee);
-        when(responseMapper.toResponseDto(trainee)).thenReturn(traineeResponseDto);
+        traineeRequestDto.setFirstName("Ciprian");
+        traineeRequestDto.setLastName("Porumbescu");
+        traineeRequestDto.setDateOfBirth(LocalDate.of(1853, 10,14));
+        traineeRequestDto.setAddress("Sipotele Sucevei");
 
-        mockMvc.perform(put("/trainees")
-                        .headers(headers)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(traineeRequestDto)))
-                .andExpect(status().isCreated());
+
+
+       MvcResult result = mockMvc.perform(put("/trainees")
+                                    .headers(headers)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(objectMapper.writeValueAsString(traineeRequestDto)))
+                            .andExpect(status().isCreated())
+                            .andReturn();
+
+       String resultAsString = result.getResponse().getContentAsString();
+       TraineeResponseDto actualResponse = objectMapper.readValue(resultAsString, TraineeResponseDto.class);
+
+       assertEquals("Ciprian.Porumbescu", actualResponse.getUsername());
+
     }
 
     @Test
     public void addTraineeWhenAlreadyExistsOneWithThisUsername() throws Exception{
 
-        when(userService.userWithUsernameExists(USERNAME)).thenReturn(true);
-        when(requestsMapper.toEntity(traineeRequestDto)).thenReturn(trainee);
-        when(traineeRepo.save(trainee)).thenReturn(trainee);
-        when(responseMapper.toResponseDto(trainee)).thenReturn(traineeResponseDto);
+        traineeRequestDto.setFirstName("Ciprian");
+        traineeRequestDto.setLastName("Porumbescu");
+        traineeRequestDto.setDateOfBirth(LocalDate.of(1853, 10,14));
+        traineeRequestDto.setAddress("Sipotele Sucevei");
 
         mockMvc.perform(put("/trainees")
                         .headers(headers)
@@ -156,23 +140,25 @@ public class TraineeControllerIntegrationTest {
     @Test
     public void updateTraineeAddressAndDateOfBirthIfExists() throws Exception{
 
-        when(traineeRepo.findByUserUsername(USERNAME)).thenReturn(Optional.of(trainee));
-        when(traineeRepo.save(trainee)).thenReturn(trainee);
-        when(traineeCompleteResponseMapper.toResponseDto(trainee)).thenReturn(traineeCompleteResponseDto);
+        traineeRequestDto.setFirstName("Ciprian");
+        traineeRequestDto.setLastName("Porumbescu");
+        traineeRequestDto.setDateOfBirth(LocalDate.of(1853, 10,24));
+        traineeRequestDto.setAddress("Sipotele Iasului");
 
         mockMvc.perform(post("/trainees")
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(traineeRequestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.address").value("Sipotele Iasului"))
+                .andExpect(jsonPath("$.dateOfBirth").value("1853-10-24"));
     }
 
     @Test
     public void updateNonExistingTrainee() throws Exception{
 
-        when(traineeRepo.findByUserUsername(USERNAME)).thenReturn(Optional.empty());
-        when(traineeRepo.save(trainee)).thenReturn(trainee);
-        when(traineeCompleteResponseMapper.toResponseDto(trainee)).thenReturn(traineeCompleteResponseDto);
+        traineeRequestDto.setFirstName("Non");
+        traineeRequestDto.setLastName("Existing");
 
         mockMvc.perform(post("/trainees")
                         .headers(headers)
@@ -184,14 +170,26 @@ public class TraineeControllerIntegrationTest {
     @Test
     public void updateIsActiveforExistingTrainee() throws Exception{
 
-        when(traineeRepo.findByUserUsername(USERNAME)).thenReturn(Optional.of(trainee));
-        when(trainee.getUser()).thenReturn(user);
 
         mockMvc.perform(post("/trainees/updateStatus")
                         .headers(headers)
                         .param("status", Boolean.toString(true))
                         .param("username", USERNAME))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user.active").value("true"));
+    }
+
+    @Test
+    public void updateIsActiveForANonExistingUser() throws Exception{
+
+        String username = "nonExistingUsername";
+
+        mockMvc.perform(post("/trainees/updateStatus")
+                        .headers(headers)
+                        .param("status", Boolean.toString(true))
+                        .param("username", username))
+                .andExpect(status().isNotFound());
+
     }
 
 }
