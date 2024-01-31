@@ -1,10 +1,8 @@
 package com.georgeifrim.HibernateDemo.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -20,11 +18,16 @@ public class TrainingType {
     @JsonManagedReference
     private List<Trainer> trainers;
 
-
     @OneToMany(mappedBy = "trainingType")
     @JsonManagedReference
     private List<Training> trainings;
 
     private String name;
+
+    public TrainingType(String name){
+        this.name = name;
+    }
+
+    public TrainingType(){}
 
 }

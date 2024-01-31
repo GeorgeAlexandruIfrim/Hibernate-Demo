@@ -33,4 +33,13 @@ public class Training {
     private LocalDate date;
     private int durationMinutes;
 
+    public Training(){}
+    public Training(String name, LocalDate date, int durationMinutes, Trainer trainer, Trainee trainee){
+        this.name=name;
+        this.date=date;
+        this.durationMinutes=durationMinutes;
+        this.trainer=trainer;
+        this.trainee=trainee;
+    }
+
 }
