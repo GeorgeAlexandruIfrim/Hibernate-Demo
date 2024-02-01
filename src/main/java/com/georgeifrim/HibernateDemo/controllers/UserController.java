@@ -15,22 +15,28 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/userById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id){
 
         return ResponseEntity.status(HttpStatus.OK)
                                 .body(userService.getUserById(id));
     }
-    @PutMapping("/addUser")
+    @PutMapping()
     public ResponseEntity<User> createUser(@RequestBody User user){
 
         return ResponseEntity.status(HttpStatusCode.valueOf(200))
                                 .body(userService.createUser(user));
     }
 
-    @PostMapping("/updateUser/{id}")
+    @PostMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user){
 
         return userService.updateUser(id, user);
+    }
+
+    @PutMapping("/changePassword/{username}")
+    public void changePass(@PathVariable String username,
+                           @RequestParam String newPassword){
+        userService.changePass(username, newPassword);
     }
 }

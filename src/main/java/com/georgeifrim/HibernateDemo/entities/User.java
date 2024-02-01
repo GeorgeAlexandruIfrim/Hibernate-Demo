@@ -1,36 +1,50 @@
 package com.georgeifrim.HibernateDemo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Random;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
     private boolean isActive;
+    private Instant blockedUntil;
+
+    @CreatedDate
+    @Temporal(TemporalType.DATE)
+    private LocalDate created;
     
-    public User(String first_name, String last_name, boolean isActive) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.username = first_name + "." + last_name;
+    public User(String firstName, String lastName, boolean isActive) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = firstName + "." + lastName;
         this.password = passwordGenerator();
         this.isActive = isActive;
     }
 
+    public boolean getActive(){
+        return isActive;
+    }
     private String passwordGenerator() {
             final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             int passwordLength = 10;

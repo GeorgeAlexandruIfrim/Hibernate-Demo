@@ -1,27 +1,31 @@
 package com.georgeifrim.HibernateDemo.services;
 
 import com.georgeifrim.HibernateDemo.entities.User;
+import com.georgeifrim.HibernateDemo.exceptions.users.UserWithUsernameNotExist;
 import com.georgeifrim.HibernateDemo.repositories.UserRepo;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-@Log4j2
+@Slf4j
 public class UserService {
 
     private final UserRepo userRepo;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public User createUser(User user) {
-        User user1 = new User(user.getFirst_name(), user.getLast_name(), user.isActive());
+        User user1 = new User(user.getFirstName(), user.getLastName(), user.getActive());
         if(userWithUsernameExists(user1.getUsername())) {
             throw new RuntimeException("User already exists");
         }
         log.info("User created");
-        return userRepo.save(user);
+        return userRepo.save(user1);
     }
 
     public User updateUser(int id, User user) {
@@ -30,10 +34,10 @@ public class UserService {
         }
         log.info("User updated");
         User existingUser = userRepo.findById(id).get();
-        existingUser.setFirst_name(user.getFirst_name());
-        existingUser.setLast_name(user.getLast_name());
-        existingUser.setUsername(user.getFirst_name() + "." + user.getLast_name());
-        existingUser.setActive(user.isActive());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setUsername(user.getFirstName() + "." + user.getLastName());
+        existingUser.setActive(user.getActive());
         return userRepo.save(existingUser);
     }
 
@@ -48,5 +52,13 @@ public class UserService {
     }
     public boolean userWithUsernameExists(String username){
           return userRepo.existsByUsername(username);
+    }
+
+    public void changePass(String username, String newPassword) {
+        var user =userRepo.findByUsername(username)
+                .orElseThrow(() -> new UserWithUsernameNotExist(username));
+        var hashedPass = passwordEncoder.encode(newPassword);
+        user.setPassword(hashedPass);
+        userRepo.save(user);
     }
 }

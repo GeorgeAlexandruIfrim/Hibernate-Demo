@@ -1,7 +1,9 @@
 package com.georgeifrim.HibernateDemo.controllers;
 
 import com.georgeifrim.HibernateDemo.entities.Trainee;
-import com.georgeifrim.HibernateDemo.entities.dto.TraineeDto;
+import com.georgeifrim.HibernateDemo.entities.dto.requests.TraineeRequestDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeCompleteResponseDto;
+import com.georgeifrim.HibernateDemo.entities.dto.responses.TraineeResponseDto;
 import com.georgeifrim.HibernateDemo.services.TraineeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,37 +17,35 @@ public class TraineeController {
 
     private final TraineeService traineeService;
 
-    @GetMapping("/byId/{id}")
-    public Trainee getTraineeById(@PathVariable Integer id){
-        return traineeService.getTraineeById(id);
-    }
-
-
-
-    @GetMapping("/byUserName/{username}")
-    public ResponseEntity<Trainee> getTraineeByUserName(@PathVariable String username){
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<TraineeCompleteResponseDto> getTraineeByUserName(@PathVariable String username){
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.getTraineeByUserName(username));
+                .body(traineeService.getByUserName(username));
     }
 
-    @PutMapping("/add")
-    public ResponseEntity<Trainee> addTrainee(@RequestBody TraineeDto traineeDto){
+    @GetMapping("/{traineeId}/trainings")
+    public ResponseEntity<?> getListOfTrainings(@PathVariable int traineeId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(traineeService.getListOfTrainings(traineeId));
+    }
+
+    @PutMapping()
+    public ResponseEntity<TraineeResponseDto> addTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(traineeService.createTrainee(traineeDto));
+                .body(traineeService.create(traineeRequestDto));
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<Trainee> updateTrainee(@PathVariable int id,
-                                                 @RequestBody TraineeDto traineeDto){
+    @PostMapping()
+    public ResponseEntity<TraineeCompleteResponseDto> updateTrainee(@RequestBody TraineeRequestDto traineeRequestDto){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.updateTrainee(id, traineeDto));
+                .body(traineeService.update(traineeRequestDto));
     }
-    @PostMapping("/updateStatus/{id}")
+    @PostMapping("/updateStatus")
     public ResponseEntity<Trainee> updateActive(@RequestParam boolean status,
-                                                @PathVariable int id){
+                                                @RequestParam String username){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(traineeService.updateActive(id, status));
+                .body(traineeService.updateActive(username, status));
     }
 
     @PostMapping("/enrollTrainer/{traineeId}/{trainerId}")
@@ -54,9 +54,15 @@ public class TraineeController {
         traineeService.enrollTrainer(traineeId, trainerId);
     }
 
-    @DeleteMapping("/delete/{username}")
+    @PostMapping("/enrollInTraining/{username}/{trainingId}")
+    public void enrollInTraining(@PathVariable String username,
+                                 @PathVariable int trainingId){
+        traineeService.enrollInTraining(username, trainingId);
+    }
+
+    @DeleteMapping("/{username}")
     public void deleteTrainee(@PathVariable String username){
-        traineeService.deleteTrainee(username);
+        traineeService.delete(username);
     }
 
 
