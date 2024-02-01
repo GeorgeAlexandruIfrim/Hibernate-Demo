@@ -61,6 +61,7 @@ class HibernateDemoApplicationTests {
 	@BeforeAll
 	static void start(){
 		container.start();
+
 	}
 	@AfterAll
 	static void stop(){
